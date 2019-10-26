@@ -31,12 +31,18 @@ const game = new Phaser.Game(config);
 let platforms;
 let player;
 let background;
-let scoreboard;
+let scoreboard = {
+  N: null,
+  S1: null,
+  S2: null
+};
 let star;
 let timer;
+let letter;
 let coffeeTimer;
 let coffee;
 let cursors;
+let currentColor;
 
 function preload() {
   this.load.image('sky', sky);
@@ -95,10 +101,10 @@ function create() {
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
   timer = this.time.addEvent({
-    delay: 500,                // ms
-    callback: starTest,
+    delay: 100,                // ms
+    callback: letterItemGenerator,
     callbackScope: this,
-    repeat: 10
+    loop: true
   });
 
 
@@ -136,10 +142,19 @@ function update() {
 
 // BEGIN FALLING ITEMS
 
-function starTest() {
+function letterItemGenerator() {
+  const letterChoice = Phaser.Math.RND.pick(["N", "S", "S"])
+  const colorChoice = Phaser.Math.RND.pick(["RED", "GREEN", "BLUE"])
+  letter = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
+  letter.name = letterChoice
+  letter.data = colorChoice
+  this.physics.add.overlap(letter, player, letterEffect)
 
-  console.log("INSIDE STARTEST FUNC");
-  star = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
+  function letterEffect(letter) {
+    letter.disableBody(true, true)
+    updateScoreboard(letter)
+    // console.log(letter.name, letter.data)
+  }
 }
 
 // COFFEE ITEM
@@ -153,3 +168,37 @@ function coffeeItemGenerator() {
   }
 }
 
+function updateScoreboard(letter) {
+  let color = letter.data
+  console.log(color)
+  if (color !== currentColor) {
+    currentColor = color
+    scoreboard = resetScoreboard()
+  }
+  console.log(currentColor)
+  console.log(letter.name)
+  if (letter.name == "N") {
+    scoreboard.N = color
+  } else if (letter.name == "S") {  
+      if (scoreboard.S1 == null) {
+        scoreboard.S1 = color
+      } else {
+        scoreboard.S2 = color
+      }
+  }
+
+
+  if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
+    // win the game
+  }
+  
+}
+
+
+function resetScoreboard(){
+  return {
+    N: null,
+    S1: null,
+    S2: null
+  }
+};
