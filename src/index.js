@@ -3,7 +3,7 @@ import { updateDatabase } from './services/firebaseService';
 import sky from "./assets/sky.png";
 import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
-import star from "./assets/items/star.png";
+import starImg from "./assets/items/star.png";
 import letterFactory from './itemFactory.js';
 
 const config = {
@@ -31,11 +31,13 @@ let platforms;
 let player;
 let background;
 let scoreboard;
+let star;
+let timer;
 
 function preload() {
   this.load.image('sky', sky);
   this.load.image('ground', ground);
-  this.load.image('star', star)
+  this.load.image('star', starImg)
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -60,25 +62,26 @@ function create() {
 
   this.physics.add.collider(player, platforms);
 
-  // scoreboard 
+  // scoreboard
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
- var timer = this.time.addEvent({
+  timer = this.time.addEvent({
     delay: 500,                // ms
     callback: starTest,
-    repeat: 4
+    callbackScope: this,
+    repeat: 10
   });
+
+
+
 }
 
 function update() {
   let letterItem = letterFactory("N", "BLUE")
 }
 
-function starTest () {
-  let star = this.physics.add.sprite(this.world.randomX, 0, 'star');
+function starTest() {
 
-  this.physics.enable(star, Phaser.Physics.ARCADE);
-
-  star.body.bounce.y = 0.9;
-  star.body.collideWorldBounds = true;
+  console.log("INSIDE STARTEST FUNC");
+  star = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
 }
