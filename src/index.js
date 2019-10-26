@@ -1,12 +1,18 @@
 import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
-import sky from "./assets/sky.png";
-import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
 import bugImg from "./assets/items/bug.png";
+import ground from "./assets/floor.png"
+import nBlueImg from "./assets/items/NBLUE.png";
+import nRedImg from "./assets/items/NRED.png";
+import nGreenImg from "./assets/items/NGREEN.png";
+import sBlueImg from "./assets/items/SBLUE.png";
+import sRedImg from "./assets/items/SRED.png";
+import sGreenImg from "./assets/items/SGREEN.png";
+import hackeryBkg from './assets/background-01.png'
 
 const config = {
   type: Phaser.AUTO,
@@ -29,7 +35,6 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-let platforms;
 let player;
 let background;
 let scoreboard = {
@@ -37,7 +42,6 @@ let scoreboard = {
   S1: null,
   S2: null
 };
-let star;
 let timer;
 let letter;
 let coffeeTimer;
@@ -46,15 +50,23 @@ let coffee;
 let bug;
 let hasBug = false;
 let cursors;
+let hasCoffee = false;
 let currentColor;
 let healthCounter = 3;
 
 function preload() {
-  this.load.image('sky', sky);
+  // this.load.image('sky', sky);
   this.load.image('ground', ground);
   this.load.image('star', starImg);
   this.load.image('coffee', coffeeImg);
   this.load.image('bug', bugImg);
+  this.load.image('NBLUE', nBlueImg);
+  this.load.image('SBLUE', sBlueImg);
+  this.load.image('NGREEN', nGreenImg);
+  this.load.image('SGREEN', nGreenImg);
+  this.load.image('NRED', nRedImg);
+  this.load.image('SRED', sRedImg);
+  this.load.image('hackeryBkg', hackeryBkg);
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -63,13 +75,7 @@ function preload() {
 
 function create() {
   // adding background
-  background = this.add.image(400, 300, 'sky');
-  background.setScale(4)
-
-  // adding ground to game
-  platforms = this.physics.add.staticGroup();
-
-  platforms.create(400, 780, 'ground').setScale(4).refreshBody();
+  background = this.add.image(600, 400, 'hackeryBkg');
 
   // adding player to game
   player = this.physics.add.sprite(600, 640, 'girl');
@@ -101,13 +107,11 @@ function create() {
     repeat: -1
   });
 
-  this.physics.add.collider(player, platforms);
-
   // scoreboard
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
   timer = this.time.addEvent({
-    delay: 500,                // ms
+    delay: 1000,                // ms
     callback: letterItemGenerator,
     callbackScope: this,
     loop: true
@@ -115,7 +119,7 @@ function create() {
 
 
   coffeeTimer = this.time.addEvent({
-    delay: 1000,                // ms
+    delay: 5000,                // ms
     callback: coffeeItemGenerator,
     callbackScope: this,
     loop: true
@@ -141,6 +145,10 @@ function update() {
       player.setVelocityX(-50);
       setTimeout(() => hasBug = false, 4000)
     }
+    if (hasCoffee) {
+      player.setVelocityX(-1000);
+      setTimeout(() => hasCoffee = false, 5000);
+    }
     player.anims.play('left', true);
   }
   else if (cursors.right.isDown) {
@@ -149,7 +157,10 @@ function update() {
       player.setVelocityX(50);
       setTimeout(() => hasBug = false, 4000)
     }
-
+    if (hasCoffee) {
+      player.setVelocityX(1000);
+      setTimeout(() => hasCoffee = false, 5000);
+    }
     player.anims.play('right', true);
   }
   else {
@@ -158,13 +169,13 @@ function update() {
   }
 }
 
-
 // BEGIN FALLING ITEMS
 
 function letterItemGenerator() {
   const letterChoice = Phaser.Math.RND.pick(["N", "S", "S"])
   const colorChoice = Phaser.Math.RND.pick(["RED", "GREEN", "BLUE"])
-  letter = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'star');
+  const choice = `${letterChoice}${colorChoice}`
+  letter = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, choice);
   letter.name = letterChoice
   letter.data = colorChoice
   this.physics.add.overlap(letter, player, letterEffect)
@@ -180,11 +191,6 @@ function letterItemGenerator() {
 function coffeeItemGenerator() {
   coffee = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'coffee');
   this.physics.add.overlap(coffee, player, coffeeEffect)
-
-  function coffeeEffect(coffee) {
-    console.log("YOU ARE AMPED!!!")
-    coffee.disableBody(true, true)
-  }
 }
 
 // BUG ITEM
@@ -201,15 +207,21 @@ function bugItemGenerator() {
   }
 }
 
+// make coffee speed up character for now
+function coffeeEffect(coffee) {
+  console.log("YOU ARE AMPED!!!")
+  coffee.disableBody(true, true)
+  hasCoffee = true;
+}
 function updateScoreboard(letter) {
+  //If player catches new color, reset score and set current color goal
   let color = letter.data
-  console.log(color)
   if (color !== currentColor) {
     currentColor = color
     scoreboard = resetScoreboard()
   }
-  console.log(currentColor)
-  console.log(letter.name)
+
+  // handle letters
   if (letter.name == "N") {
     scoreboard.N = color
   } else if (letter.name == "S") {
@@ -220,10 +232,13 @@ function updateScoreboard(letter) {
     }
   }
 
-  // updateDatabase(scoreboard)
+  //Push scoreboard to firebase
+  updateDatabase(scoreboard)
 
+  //Check win condition
   if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
     // win the game
+    takePhoto();
   }
 }
 
