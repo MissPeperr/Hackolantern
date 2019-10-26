@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
-import sky from "./assets/sky.png";
-import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import { takePhoto } from './services/sneakyPhotoService';
@@ -12,6 +10,7 @@ import nGreenImg from "./assets/items/NGREEN.png";
 import sBlueImg from "./assets/items/SBLUE.png";
 import sRedImg from "./assets/items/SRED.png";
 import sGreenImg from "./assets/items/SGREEN.png";
+import hackeryBkg from './assets/background-01.png'
 
 const config = {
   type: Phaser.AUTO,
@@ -34,7 +33,6 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-let platforms;
 let player;
 let background;
 let scoreboard = {
@@ -50,6 +48,7 @@ let cursors;
 let currentColor;
 
 function preload() {
+<<<<<<< HEAD
   this.load.image('sky', sky);
   this.load.image('ground', ground);
   this.load.image('NBLUE', nBlueImg);
@@ -59,6 +58,11 @@ function preload() {
   this.load.image('NRED', nRedImg);
   this.load.image('SRED', sRedImg);
   this.load.image('coffee', coffeeImg);
+=======
+  this.load.image('hackeryBkg', hackeryBkg);
+  this.load.image('star', starImg)
+  this.load.image('coffee', coffeeImg)
+>>>>>>> master
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -67,13 +71,7 @@ function preload() {
 
 function create() {
   // adding background
-  background = this.add.image(400, 300, 'sky');
-  background.setScale(4)
-
-  // adding ground to game
-  platforms = this.physics.add.staticGroup();
-
-  platforms.create(400, 780, 'ground').setScale(4).refreshBody();
+  background = this.add.image(600, 400, 'hackeryBkg');
 
   // adding player to game
   player = this.physics.add.sprite(600, 640, 'girl');
@@ -104,8 +102,6 @@ function create() {
     frameRate: 10,
     repeat: -1
   });
-
-  this.physics.add.collider(player, platforms);
 
   // scoreboard
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
