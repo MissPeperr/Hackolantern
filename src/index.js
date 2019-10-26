@@ -45,6 +45,7 @@ let letter;
 let coffeeTimer;
 let coffee;
 let cursors;
+let hasCoffee = false;
 let currentColor;
 
 function preload() {
@@ -110,10 +111,10 @@ function create() {
 
 
   coffeeTimer = this.time.addEvent({
-    delay: 500,                // ms
+    delay: 5000,                // ms
     callback: coffeeItemGenerator,
     callbackScope: this,
-    repeat: 10
+    loop: true
   });
 
 
@@ -125,12 +126,18 @@ function update() {
   // let letterItem = letterFactory("N", "BLUE")
   if (cursors.left.isDown) {
     player.setVelocityX(-250);
-
+    if (hasCoffee) {
+      player.setVelocityX(-1000);
+      setTimeout(() => hasCoffee = false, 5000);
+    }
     player.anims.play('left', true);
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(250);
-
+    if (hasCoffee) {
+      player.setVelocityX(1000);
+      setTimeout(() => hasCoffee = false, 5000);
+    }
     player.anims.play('right', true);
   }
   else {
@@ -163,13 +170,14 @@ function letterItemGenerator() {
 function coffeeItemGenerator() {
   coffee = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'coffee');
   this.physics.add.overlap(coffee, player, coffeeEffect)
-
-  function coffeeEffect(coffee) {
-    console.log("YOU ARE AMPED!!!")
-    coffee.disableBody(true, true)
-  }
 }
 
+// make coffee speed up character for now
+function coffeeEffect(coffee) {
+  console.log("YOU ARE AMPED!!!")
+  coffee.disableBody(true, true)
+  hasCoffee = true;
+}
 function updateScoreboard(letter) {
   //If player catches new color, reset score and set current color goal
   let color = letter.data
