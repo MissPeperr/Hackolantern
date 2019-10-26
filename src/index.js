@@ -145,7 +145,7 @@ function update() {
 function letterItemGenerator() {
   const letterChoice = Phaser.Math.RND.pick(["N", "S", "S"])
   const colorChoice = Phaser.Math.RND.pick(["RED", "GREEN", "BLUE"])
-  letter = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
+  letter = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'star');
   letter.name = letterChoice
   letter.data = colorChoice
   this.physics.add.overlap(letter, player, letterEffect)
@@ -159,7 +159,7 @@ function letterItemGenerator() {
 
 // COFFEE ITEM
 function coffeeItemGenerator() {
-  coffee = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'coffee');
+  coffee = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'coffee');
   this.physics.add.overlap(coffee, player, coffeeEffect)
 
   function coffeeEffect(coffee) {
@@ -179,12 +179,12 @@ function updateScoreboard(letter) {
   console.log(letter.name)
   if (letter.name == "N") {
     scoreboard.N = color
-  } else if (letter.name == "S") {  
-      if (scoreboard.S1 == null) {
-        scoreboard.S1 = color
-      } else {
-        scoreboard.S2 = color
-      }
+  } else if (letter.name == "S") {
+    if (scoreboard.S1 == null) {
+      scoreboard.S1 = color
+    } else {
+      scoreboard.S2 = color
+    }
   }
 
   // updateDatabase(scoreboard)
@@ -195,7 +195,7 @@ function updateScoreboard(letter) {
 }
 
 
-function resetScoreboard(){
+function resetScoreboard() {
   return {
     N: null,
     S1: null,

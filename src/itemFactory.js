@@ -38,7 +38,6 @@ const items = {
     function coffeeEffect(coffeeObject) {
       console.log("YOU ARE AMPED!!!")
     }
-
     return coffee
   }
 }
