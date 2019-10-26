@@ -12,6 +12,14 @@ import sRedImg from "./assets/items/SRED.png";
 import sGreenImg from "./assets/items/SGREEN.png";
 import hackeryBkg from './assets/background-01.png'
 
+import bugSfxFile from "./assets/sfx/bug.wav";
+import coffeeSfxFile from "./assets/sfx/coffee.wav";
+import letterSfxFile from "./assets/sfx/letter.wav";
+import loseSfxFile from "./assets/sfx/lose.wav";
+import winSfxFile from "./assets/sfx/win.wav";
+import bgmusicFile from "./assets/sfx/theme.mp3";
+
+
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
@@ -51,9 +59,24 @@ let cursors;
 let hasCoffee = false;
 let currentColor;
 let healthCounter = 3;
+//sfx
+let bgmusic;
+let bugSfx;
+let coffeeSfx;
+let letterSfx;
+let winSfx;
+let loseSfx;
 
 function preload() {
-  // this.load.image('sky', sky);
+  // sfx
+  this.load.audio('bgmusic', bgmusicFile);
+  this.load.audio('bugSfx', bugSfxFile);
+  this.load.audio('coffeeSfx', coffeeSfxFile);
+  this.load.audio('loseSfx', loseSfxFile);
+  this.load.audio('winSfx', winSfxFile);
+  this.load.audio('letterSfx', letterSfxFile);
+
+  // img
   this.load.image('coffee', coffeeImg);
   this.load.image('bug', bugImg);
   this.load.image('NBLUE', nBlueImg);
@@ -130,7 +153,17 @@ function create() {
     loop: true
   });
 
-
+  bgmusic = this.sound.add('bgmusic');
+  bugSfx = this.sound.add('bugSfx') 
+  coffeeSfx = this.sound.add('coffeeSfx')
+  winSfx = this.sound.add('winSfx')
+  loseSfx = this.sound.add('loseSfx')
+  letterSfx = this.sound.add('letterSfx')
+  
+  bgmusic.play({
+    volume: .2,
+    loop: true
+  })
 
   cursors = this.input.keyboard.createCursorKeys();
 }
@@ -179,6 +212,7 @@ function letterItemGenerator() {
   this.physics.add.overlap(letter, player, letterEffect)
 
   function letterEffect(letter) {
+    letterSfx.play({ volume: .4})
     letter.disableBody(true, true)
     updateScoreboard(letter)
     // console.log(letter.name, letter.data)
@@ -197,6 +231,7 @@ function bugItemGenerator() {
   this.physics.add.overlap(bug, player, bugEffect)
 
   function bugEffect(bug) {
+    bugSfx.play({ volume: .4})
     console.log("BUGGER - YOU'RE SO SLOW!!!")
     hasBug = true;
     healthCounter--
@@ -207,6 +242,7 @@ function bugItemGenerator() {
 
 // make coffee speed up character for now
 function coffeeEffect(coffee) {
+  coffeeSfx.play({ volume: .4})
   console.log("YOU ARE AMPED!!!")
   coffee.disableBody(true, true)
   hasCoffee = true;
