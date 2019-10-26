@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
 import girl from "./assets/sprite-girl.png";
-import starImg from "./assets/items/star.png";
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
+import bugImg from "./assets/items/bug.png";
 import nBlueImg from "./assets/items/NBLUE.png";
 import nRedImg from "./assets/items/NRED.png";
 import nGreenImg from "./assets/items/NGREEN.png";
@@ -43,22 +43,26 @@ let scoreboard = {
 let timer;
 let letter;
 let coffeeTimer;
+let bugTimer;
 let coffee;
+let bug;
+let hasBug = false;
 let cursors;
 let hasCoffee = false;
 let currentColor;
+let healthCounter = 3;
 
 function preload() {
+  // this.load.image('sky', sky);
+  this.load.image('coffee', coffeeImg);
+  this.load.image('bug', bugImg);
   this.load.image('NBLUE', nBlueImg);
   this.load.image('SBLUE', sBlueImg);
   this.load.image('NGREEN', nGreenImg);
   this.load.image('SGREEN', nGreenImg);
   this.load.image('NRED', nRedImg);
   this.load.image('SRED', sRedImg);
-  this.load.image('coffee', coffeeImg);
   this.load.image('hackeryBkg', hackeryBkg);
-  this.load.image('star', starImg)
-  this.load.image('coffee', coffeeImg)
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -66,6 +70,8 @@ function preload() {
 }
 
 function create() {
+  // Ensure database has new game condition
+  updateDatabase(scoreboard)
   // adding background
   background = this.add.image(600, 400, 'hackeryBkg');
 
@@ -117,6 +123,13 @@ function create() {
     loop: true
   });
 
+  bugTimer = this.time.addEvent({
+    delay: 1500,                // ms
+    callback: bugItemGenerator,
+    callbackScope: this,
+    loop: true
+  });
+
 
 
   cursors = this.input.keyboard.createCursorKeys();
@@ -126,6 +139,10 @@ function update() {
   // let letterItem = letterFactory("N", "BLUE")
   if (cursors.left.isDown) {
     player.setVelocityX(-250);
+    if (hasBug) {
+      player.setVelocityX(-50);
+      setTimeout(() => hasBug = false, 4000)
+    }
     if (hasCoffee) {
       player.setVelocityX(-1000);
       setTimeout(() => hasCoffee = false, 5000);
@@ -134,6 +151,10 @@ function update() {
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(250);
+    if (hasBug) {
+      player.setVelocityX(50);
+      setTimeout(() => hasBug = false, 4000)
+    }
     if (hasCoffee) {
       player.setVelocityX(1000);
       setTimeout(() => hasCoffee = false, 5000);
@@ -142,11 +163,9 @@ function update() {
   }
   else {
     player.setVelocityX(0);
-
     player.anims.play('turn');
   }
 }
-
 
 // BEGIN FALLING ITEMS
 
@@ -170,6 +189,20 @@ function letterItemGenerator() {
 function coffeeItemGenerator() {
   coffee = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'coffee');
   this.physics.add.overlap(coffee, player, coffeeEffect)
+}
+
+// BUG ITEM
+function bugItemGenerator() {
+  bug = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'bug');
+  this.physics.add.overlap(bug, player, bugEffect)
+
+  function bugEffect(bug) {
+    console.log("BUGGER - YOU'RE SO SLOW!!!")
+    hasBug = true;
+    healthCounter--
+    bug.disableBody(true, true)
+    console.log(healthCounter)
+  }
 }
 
 // make coffee speed up character for now
@@ -203,6 +236,7 @@ function updateScoreboard(letter) {
   //Check win condition
   if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
     // win the game
+    takePhoto();
   }
 }
 
