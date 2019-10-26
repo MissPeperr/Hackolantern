@@ -5,7 +5,6 @@ import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import coffeeImg from "./assets/items/coffee.png";
-import items from './itemFactory.js';
 
 const config = {
   type: Phaser.AUTO,
