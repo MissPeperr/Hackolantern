@@ -121,6 +121,7 @@ function update() {
     player.setVelocityX(-250);
     if (hasCoffee) {
       player.setVelocityX(-1000);
+      setTimeout(() => hasCoffee = false, 5000);
     }
     player.anims.play('left', true);
   }
@@ -128,6 +129,7 @@ function update() {
     player.setVelocityX(250);
     if (hasCoffee) {
       player.setVelocityX(1000);
+      setTimeout(() => hasCoffee = false, 5000);
     }
     player.anims.play('right', true);
   }
