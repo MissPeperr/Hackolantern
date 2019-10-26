@@ -247,6 +247,18 @@ function coffeeEffect(coffee) {
   coffee.disableBody(true, true)
   hasCoffee = true;
 }
+
+//Lighting Bolt
+function lightingGenerator() {
+  lightning = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'bug');
+  this.physics.add.overlap(lightning, player, lightningEffect)
+}
+
+function lightningEffect(lightning) {
+
+}
+
+
 function updateScoreboard(letter) {
   //If player catches new color, reset score and set current color goal
   let color = letter.data
