@@ -5,6 +5,7 @@ import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import letterFactory from './itemFactory.js';
+import { takePhoto } from './services/sneakyPhotoService';
 
 const config = {
   type: Phaser.AUTO,
