@@ -1,3 +1,4 @@
+
 class Item {
   constructor(name, gravity, effect, scale, imgUrl) {
     this.Name = name;
@@ -8,21 +9,38 @@ class Item {
   }
 }
 
-export default function letterFactory (letter, color) {
-  const name = `${letter}-${color}`
-  const gravity = 0
-  const scale = 1
-  const imgUrl = `${name}.png`
-  const effect = letterEffect
-  let letterItem = new Item(name, gravity, effect, scale, imgUrl)
+const items = {
+  letterFactory(letter, color) {
+    const name = `${letter}-${color}`
+    const gravity = 0
+    const scale = 1
+    const imgUrl = `${name}.png`
+    const effect = letterEffect
+    let letterItem = new Item(name, gravity, effect, scale, imgUrl)
 
-  function letterEffect () {
-    if (letter === "N") {
-      scoreboard.setText("N") 
-    } else if (letter === "S") {
-      scoreboard.setText("S")
+    function letterEffect() {
+      if (letter === "N") {
+        scoreboard.setText("N")
+      } else if (letter === "S") {
+        scoreboard.setText("S")
+      }
     }
-  }
+  },
 
-  return letterItem
+  coffeeFactory(coffeeObject) {
+    const name = "Coffee"
+    const gravity = 0
+    const scale = 1
+    const imgUrl = "coffee.png"
+    const effect = coffeeEffect
+    let coffee = new Item(name, gravity, effect, scale, imgUrl)
+
+    function coffeeEffect(coffeeObject) {
+      console.log("YOU ARE AMPED!!!")
+    }
+
+    return coffee
+  }
 }
+
+export default items
