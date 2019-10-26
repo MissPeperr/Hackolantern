@@ -6,6 +6,7 @@ import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import coffeeImg from "./assets/items/coffee.png";
 import items from './itemFactory.js';
+import hackeryBkg from './assets/background-01.png'
 
 const config = {
   type: Phaser.AUTO,
@@ -39,7 +40,7 @@ let coffee;
 let cursors;
 
 function preload() {
-  this.load.image('sky', sky);
+  this.load.image('hackeryBkg', hackeryBkg);
   this.load.image('ground', ground);
   this.load.image('star', starImg)
   this.load.image('coffee', coffeeImg)
@@ -51,7 +52,7 @@ function preload() {
 
 function create() {
   // adding background
-  background = this.add.image(400, 300, 'sky');
+  background = this.add.image(400, 300, 'hackeryBkg');
   background.setScale(4)
 
   // adding ground to game
