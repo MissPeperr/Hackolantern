@@ -37,6 +37,7 @@ let timer;
 let coffeeTimer;
 let coffee;
 let cursors;
+let hasCoffee = false;
 
 function preload() {
   this.load.image('sky', sky);
@@ -106,7 +107,7 @@ function create() {
     delay: 500,                // ms
     callback: coffeeItemGenerator,
     callbackScope: this,
-    repeat: 10
+    loop: true
   });
 
 
@@ -118,12 +119,16 @@ function update() {
   // let letterItem = letterFactory("N", "BLUE")
   if (cursors.left.isDown) {
     player.setVelocityX(-250);
-
+    if (hasCoffee) {
+      player.setVelocityX(-1000);
+    }
     player.anims.play('left', true);
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(250);
-
+    if (hasCoffee) {
+      player.setVelocityX(1000);
+    }
     player.anims.play('right', true);
   }
   else {
@@ -146,10 +151,18 @@ function starTest() {
 function coffeeItemGenerator() {
   coffee = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'coffee');
   this.physics.add.overlap(coffee, player, coffeeEffect)
-
-  function coffeeEffect(coffee) {
-    console.log("YOU ARE AMPED!!!")
-    coffee.disableBody(true, true)
-  }
 }
 
+// make coffee speed up character for now
+function coffeeEffect(coffee) {
+  console.log("YOU ARE AMPED!!!")
+  coffee.disableBody(true, true)
+  let counter = 0;
+  for(let i = 0; counter < 100; i ++){
+    counter++;
+    hasCoffee = true;
+  }
+  // if(counter > 0){
+    hasCoffee = false;
+  // }
+}
