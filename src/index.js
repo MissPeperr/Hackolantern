@@ -1,33 +1,57 @@
 import Phaser from 'phaser';
-import logoImg from './assets/logo.png';
 import { updateDatabase } from './services/firebaseService';
+import sky from "./assets/sky.png";
+import ground from "./assets/platform.png";
+import girl from "./assets/sprite-girl.png";
 
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
-  width: 800,
-  height: 600,
+  width: 1200,
+  height: 800,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 300 },
+      debug: false
+    }
+  },
   scene: {
     preload: preload,
-    create: create
+    create: create,
+    update: update
   }
 };
 
 const game = new Phaser.Game(config);
+let platforms;
+let player;
 
 function preload() {
-  this.load.image("logo", logoImg);
+  this.load.image('sky', sky);
+  this.load.image('ground', ground);
+  this.load.spritesheet('girl',
+    girl,
+    { frameWidth: 32, frameHeight: 48 }
+  );
 }
 
 function create() {
-  const logo = this.add.image(400, 150, "logo");
+  // adding background
+  this.add.image(400, 300, 'sky');
 
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
-  });
+  // adding ground to game
+  platforms = this.physics.add.staticGroup();
+
+  platforms.create(400, 800, 'ground').setScale(2).refreshBody();
+
+  // adding player to game
+  player = this.physics.add.sprite(100, 450, 'girl');
+
+  player.setBounce(0.2);
+  player.setCollideWorldBounds(true);
+
+}
+function update() {
+
 }
