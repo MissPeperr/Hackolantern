@@ -1,33 +1,155 @@
 import Phaser from 'phaser';
-import logoImg from './assets/logo.png';
 import { updateDatabase } from './services/firebaseService';
+import sky from "./assets/sky.png";
+import ground from "./assets/floor.png"
+import girl from "./assets/sprite-girl.png";
+import starImg from "./assets/items/star.png";
+import coffeeImg from "./assets/items/coffee.png";
+import items from './itemFactory.js';
 
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
-  width: 800,
-  height: 600,
+  width: 1200,
+  height: 800,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 300 },
+      debug: false
+    }
+  },
   scene: {
     preload: preload,
-    create: create
-  }
+    create: create,
+    update: update,
+  },
+  pixelArt: true
 };
 
 const game = new Phaser.Game(config);
+let platforms;
+let player;
+let background;
+let scoreboard;
+let star;
+let timer;
+let coffeeTimer;
+let coffee;
+let cursors;
 
 function preload() {
-  this.load.image("logo", logoImg);
+  this.load.image('sky', sky);
+  this.load.image('ground', ground);
+  this.load.image('star', starImg)
+  this.load.image('coffee', coffeeImg)
+  this.load.spritesheet('girl',
+    girl,
+    { frameWidth: 32, frameHeight: 48 }
+  );
 }
 
 function create() {
-  const logo = this.add.image(400, 150, "logo");
+  // adding background
+  background = this.add.image(400, 300, 'sky');
+  background.setScale(4)
 
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
+  // adding ground to game
+  platforms = this.physics.add.staticGroup();
+
+  platforms.create(400, 780, 'ground').setScale(4).refreshBody();
+
+  // adding player to game
+  player = this.physics.add.sprite(600, 640, 'girl');
+
+  player.setScale(3);
+  player.setBounce(0.2);
+  player.setCollideWorldBounds(true);
+
+  // left animation
+  this.anims.create({
+    key: 'left',
+    frames: this.anims.generateFrameNumbers('girl', { start: 0, end: 8 }),
+    frameRate: 10,
+    repeat: -1
   });
+
+  // turn animation
+  this.anims.create({
+    key: 'turn',
+    frames: [{ key: 'girl', frame: 9 }],
+    frameRate: 20
+  });
+
+  // right animation
+  this.anims.create({
+    key: 'right',
+    frames: this.anims.generateFrameNumbers('girl', { start: 10, end: 18 }),
+    frameRate: 10,
+    repeat: -1
+  });
+
+  this.physics.add.collider(player, platforms);
+
+  // scoreboard
+  scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
+
+  timer = this.time.addEvent({
+    delay: 500,                // ms
+    callback: starTest,
+    callbackScope: this,
+    repeat: 10
+  });
+
+
+  coffeeTimer = this.time.addEvent({
+    delay: 500,                // ms
+    callback: coffeeItemGenerator,
+    callbackScope: this,
+    repeat: 10
+  });
+
+
+
+  cursors = this.input.keyboard.createCursorKeys();
 }
+
+function update() {
+  // let letterItem = letterFactory("N", "BLUE")
+  if (cursors.left.isDown) {
+    player.setVelocityX(-250);
+
+    player.anims.play('left', true);
+  }
+  else if (cursors.right.isDown) {
+    player.setVelocityX(250);
+
+    player.anims.play('right', true);
+  }
+  else {
+    player.setVelocityX(0);
+
+    player.anims.play('turn');
+  }
+}
+
+
+// BEGIN FALLING ITEMS
+
+function starTest() {
+
+  console.log("INSIDE STARTEST FUNC");
+  star = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
+}
+
+// COFFEE ITEM
+function coffeeItemGenerator() {
+  coffee = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'coffee');
+  this.physics.add.overlap(coffee, player, coffeeEffect)
+
+  function coffeeEffect(coffee) {
+    console.log("YOU ARE AMPED!!!")
+    coffee.disableBody(true, true)
+  }
+}
+
