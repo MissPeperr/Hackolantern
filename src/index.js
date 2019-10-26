@@ -7,7 +7,6 @@ import starImg from "./assets/items/star.png";
 import letterFactory from './itemFactory.js';
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
-import items from './itemFactory.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -147,7 +146,7 @@ function update() {
 function letterItemGenerator() {
   const letterChoice = Phaser.Math.RND.pick(["N", "S", "S"])
   const colorChoice = Phaser.Math.RND.pick(["RED", "GREEN", "BLUE"])
-  letter = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
+  letter = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'star');
   letter.name = letterChoice
   letter.data = colorChoice
   this.physics.add.overlap(letter, player, letterEffect)
@@ -161,7 +160,7 @@ function letterItemGenerator() {
 
 // COFFEE ITEM
 function coffeeItemGenerator() {
-  coffee = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'coffee');
+  coffee = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'coffee');
   this.physics.add.overlap(coffee, player, coffeeEffect)
 
   function coffeeEffect(coffee) {
