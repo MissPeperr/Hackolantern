@@ -11,6 +11,7 @@ import sBlueImg from "./assets/items/SBLUE.png";
 import sRedImg from "./assets/items/SRED.png";
 import sGreenImg from "./assets/items/SGREEN.png";
 import hackeryBkg from './assets/background-01.png'
+import lightningImg from './assets/items/Lightning_Bolt.png'
 
 import bugSfxFile from "./assets/sfx/bug.wav";
 import coffeeSfxFile from "./assets/sfx/coffee.wav";
@@ -54,6 +55,8 @@ let coffeeTimer;
 let bugTimer;
 let coffee;
 let bug;
+let lightning;
+let lightningTimer;
 let hasBug = false;
 let cursors;
 let hasCoffee = false;
@@ -79,6 +82,7 @@ function preload() {
   // img
   this.load.image('coffee', coffeeImg);
   this.load.image('bug', bugImg);
+  this.load.image('lightning', lightningImg)
   this.load.image('NBLUE', nBlueImg);
   this.load.image('SBLUE', sBlueImg);
   this.load.image('NGREEN', nGreenImg);
@@ -149,6 +153,13 @@ function create() {
   bugTimer = this.time.addEvent({
     delay: 1500,                // ms
     callback: bugItemGenerator,
+    callbackScope: this,
+    loop: true
+  });
+
+  lightningTimer = this.time.addEvent({
+    delay: 1500,                // ms
+    callback: lightingGenerator,
     callbackScope: this,
     loop: true
   });
@@ -250,12 +261,12 @@ function coffeeEffect(coffee) {
 
 //Lighting Bolt
 function lightingGenerator() {
-  lightning = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'bug');
+  lightning = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'lightning');
   this.physics.add.overlap(lightning, player, lightningEffect)
 }
 
 function lightningEffect(lightning) {
-
+console.log('You got struck by lighting')
 }
 
 
