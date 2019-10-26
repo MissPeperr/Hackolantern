@@ -1,5 +1,6 @@
-import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
+import Phaser from 'phaser';
+import logoImg from './assets/logo.png';
+import { updateDatabase } from './services/firebaseService';
 
 const config = {
   type: Phaser.AUTO,
