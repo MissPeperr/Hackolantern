@@ -4,6 +4,8 @@ import sky from "./assets/sky.png";
 import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
+import letterFactory from './itemFactory.js';
+import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
 import items from './itemFactory.js';
 
@@ -179,12 +181,12 @@ function updateScoreboard(letter) {
   console.log(letter.name)
   if (letter.name == "N") {
     scoreboard.N = color
-  } else if (letter.name == "S") {  
-      if (scoreboard.S1 == null) {
-        scoreboard.S1 = color
-      } else {
-        scoreboard.S2 = color
-      }
+  } else if (letter.name == "S") {
+    if (scoreboard.S1 == null) {
+      scoreboard.S1 = color
+    } else {
+      scoreboard.S2 = color
+    }
   }
 
   // updateDatabase(scoreboard)
@@ -195,7 +197,7 @@ function updateScoreboard(letter) {
 }
 
 
-function resetScoreboard(){
+function resetScoreboard() {
   return {
     N: null,
     S1: null,
