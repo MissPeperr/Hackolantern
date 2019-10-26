@@ -187,11 +187,11 @@ function updateScoreboard(letter) {
       }
   }
 
+  // updateDatabase(scoreboard)
 
   if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
     // win the game
   }
-  
 }
 
 
