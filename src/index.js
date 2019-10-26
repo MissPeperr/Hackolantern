@@ -1,11 +1,9 @@
 import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
 import girl from "./assets/sprite-girl.png";
-import starImg from "./assets/items/star.png";
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
 import bugImg from "./assets/items/bug.png";
-import ground from "./assets/floor.png"
 import nBlueImg from "./assets/items/NBLUE.png";
 import nRedImg from "./assets/items/NRED.png";
 import nGreenImg from "./assets/items/NGREEN.png";
@@ -56,8 +54,6 @@ let healthCounter = 3;
 
 function preload() {
   // this.load.image('sky', sky);
-  this.load.image('ground', ground);
-  this.load.image('star', starImg);
   this.load.image('coffee', coffeeImg);
   this.load.image('bug', bugImg);
   this.load.image('NBLUE', nBlueImg);
@@ -74,6 +70,8 @@ function preload() {
 }
 
 function create() {
+  // Ensure database has new game condition
+  updateDatabase(scoreboard)
   // adding background
   background = this.add.image(600, 400, 'hackeryBkg');
 
