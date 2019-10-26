@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
-import sky from "./assets/sky.png";
-import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import coffeeImg from "./assets/items/coffee.png";
@@ -29,7 +27,6 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-let platforms;
 let player;
 let background;
 let scoreboard;
@@ -41,7 +38,6 @@ let cursors;
 
 function preload() {
   this.load.image('hackeryBkg', hackeryBkg);
-  this.load.image('ground', ground);
   this.load.image('star', starImg)
   this.load.image('coffee', coffeeImg)
   this.load.spritesheet('girl',
@@ -52,13 +48,7 @@ function preload() {
 
 function create() {
   // adding background
-  background = this.add.image(400, 300, 'hackeryBkg');
-  background.setScale(4)
-
-  // adding ground to game
-  platforms = this.physics.add.staticGroup();
-
-  platforms.create(400, 780, 'ground').setScale(4).refreshBody();
+  background = this.add.image(600, 400, 'hackeryBkg');
 
   // adding player to game
   player = this.physics.add.sprite(600, 640, 'girl');
@@ -89,8 +79,6 @@ function create() {
     frameRate: 10,
     repeat: -1
   });
-
-  this.physics.add.collider(player, platforms);
 
   // scoreboard
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
