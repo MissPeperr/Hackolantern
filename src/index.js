@@ -63,7 +63,7 @@ function preload() {
   this.load.image('NBLUE', nBlueImg);
   this.load.image('SBLUE', sBlueImg);
   this.load.image('NGREEN', nGreenImg);
-  this.load.image('SGREEN', nGreenImg);
+  this.load.image('SGREEN', sGreenImg);
   this.load.image('NRED', nRedImg);
   this.load.image('SRED', sRedImg);
   this.load.image('hackeryBkg', hackeryBkg);
@@ -238,6 +238,7 @@ function updateScoreboard(letter) {
   //Check win condition
   if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
     // win the game
+    console.log("YOU WIN!")
     takePhoto();
   }
 }
