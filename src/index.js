@@ -4,9 +4,9 @@ import sky from "./assets/sky.png";
 import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
-import letterFactory from './itemFactory.js';
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
+import bugImg from "./assets/items/bug.png";
 
 const config = {
   type: Phaser.AUTO,
@@ -41,15 +41,19 @@ let star;
 let timer;
 let letter;
 let coffeeTimer;
+let bugTimer;
 let coffee;
+let bug;
+let hasBug = false;
 let cursors;
 let currentColor;
 
 function preload() {
   this.load.image('sky', sky);
   this.load.image('ground', ground);
-  this.load.image('star', starImg)
-  this.load.image('coffee', coffeeImg)
+  this.load.image('star', starImg);
+  this.load.image('coffee', coffeeImg);
+  this.load.image('bug', bugImg);
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -102,7 +106,7 @@ function create() {
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
   timer = this.time.addEvent({
-    delay: 100,                // ms
+    delay: 500,                // ms
     callback: letterItemGenerator,
     callbackScope: this,
     loop: true
@@ -110,10 +114,17 @@ function create() {
 
 
   coffeeTimer = this.time.addEvent({
-    delay: 500,                // ms
+    delay: 1000,                // ms
     callback: coffeeItemGenerator,
     callbackScope: this,
-    repeat: 10
+    loop: true
+  });
+
+  bugTimer = this.time.addEvent({
+    delay: 1500,                // ms
+    callback: bugItemGenerator,
+    callbackScope: this,
+    loop: true
   });
 
 
@@ -125,17 +136,23 @@ function update() {
   // let letterItem = letterFactory("N", "BLUE")
   if (cursors.left.isDown) {
     player.setVelocityX(-250);
-
+    if (hasBug) {
+      player.setVelocityX(-50);
+      setTimeout(() => hasBug = false, 4000)
+    }
     player.anims.play('left', true);
   }
   else if (cursors.right.isDown) {
     player.setVelocityX(250);
+    if (hasBug) {
+      player.setVelocityX(50);
+      setTimeout(() => hasBug = false, 4000)
+    }
 
     player.anims.play('right', true);
   }
   else {
     player.setVelocityX(0);
-
     player.anims.play('turn');
   }
 }
@@ -166,6 +183,18 @@ function coffeeItemGenerator() {
   function coffeeEffect(coffee) {
     console.log("YOU ARE AMPED!!!")
     coffee.disableBody(true, true)
+  }
+}
+
+// BUG ITEM
+function bugItemGenerator() {
+  bug = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'bug');
+  this.physics.add.overlap(bug, player, bugEffect)
+
+  function bugEffect(bug) {
+    console.log("BUGGER - YOU'RE SO SLOW!!!")
+    hasBug = true;
+    bug.disableBody(true, true)
   }
 }
 
