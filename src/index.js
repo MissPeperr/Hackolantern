@@ -48,9 +48,6 @@ let cursors;
 let currentColor;
 
 function preload() {
-<<<<<<< HEAD
-  this.load.image('sky', sky);
-  this.load.image('ground', ground);
   this.load.image('NBLUE', nBlueImg);
   this.load.image('SBLUE', sBlueImg);
   this.load.image('NGREEN', nGreenImg);
@@ -58,11 +55,9 @@ function preload() {
   this.load.image('NRED', nRedImg);
   this.load.image('SRED', sRedImg);
   this.load.image('coffee', coffeeImg);
-=======
   this.load.image('hackeryBkg', hackeryBkg);
   this.load.image('star', starImg)
   this.load.image('coffee', coffeeImg)
->>>>>>> master
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
