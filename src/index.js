@@ -3,6 +3,8 @@ import { updateDatabase } from './services/firebaseService';
 import sky from "./assets/sky.png";
 import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
+import star from "./assets/items/star.png";
+import letterFactory from './itemFactory.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -19,18 +21,21 @@ const config = {
   scene: {
     preload: preload,
     create: create,
-    update: update
-  }
+    update: update,
+  },
+  pixelArt: true
 };
 
 const game = new Phaser.Game(config);
 let platforms;
 let player;
 let background;
+let scoreboard;
 
 function preload() {
   this.load.image('sky', sky);
   this.load.image('ground', ground);
+  this.load.image('star', star)
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -55,7 +60,25 @@ function create() {
 
   this.physics.add.collider(player, platforms);
 
-}
-function update() {
+  // scoreboard 
+  scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
+ var timer = this.time.addEvent({
+    delay: 500,                // ms
+    callback: starTest,
+    repeat: 4
+  });
+}
+
+function update() {
+  let letterItem = letterFactory("N", "BLUE")
+}
+
+function starTest () {
+  let star = this.physics.add.sprite(this.world.randomX, 0, 'star');
+
+  this.physics.enable(star, Phaser.Physics.ARCADE);
+
+  star.body.bounce.y = 0.9;
+  star.body.collideWorldBounds = true;
 }
