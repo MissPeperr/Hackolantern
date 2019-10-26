@@ -2,10 +2,8 @@ import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
-import letterFactory from './itemFactory.js';
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
-import items from './itemFactory.js';
 import hackeryBkg from './assets/background-01.png'
 
 const config = {
