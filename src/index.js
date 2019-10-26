@@ -38,18 +38,21 @@ function preload() {
 
 function create() {
   // adding background
-  this.add.image(400, 300, 'sky');
+  const background = this.add.image(400, 300, 'sky');
+  background.create.setScale(4)
 
   // adding ground to game
   platforms = this.physics.add.staticGroup();
 
-  platforms.create(400, 800, 'ground').setScale(2).refreshBody();
+  platforms.create(400, 780, 'ground').setScale(4).refreshBody();
 
   // adding player to game
   player = this.physics.add.sprite(100, 450, 'girl');
 
   player.setBounce(0.2);
   player.setCollideWorldBounds(true);
+
+  this.physics.add.collider(player, platforms);
 
 }
 function update() {
