@@ -47,6 +47,7 @@ let bug;
 let hasBug = false;
 let cursors;
 let currentColor;
+let healthCounter = 3;
 
 function preload() {
   this.load.image('sky', sky);
@@ -194,7 +195,9 @@ function bugItemGenerator() {
   function bugEffect(bug) {
     console.log("BUGGER - YOU'RE SO SLOW!!!")
     hasBug = true;
+    healthCounter--
     bug.disableBody(true, true)
+    console.log(healthCounter)
   }
 }
 
