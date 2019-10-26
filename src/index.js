@@ -4,6 +4,12 @@ import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
 import { takePhoto } from './services/sneakyPhotoService';
 import coffeeImg from "./assets/items/coffee.png";
+import nBlueImg from "./assets/items/NBLUE.png";
+import nRedImg from "./assets/items/NRED.png";
+import nGreenImg from "./assets/items/NGREEN.png";
+import sBlueImg from "./assets/items/SBLUE.png";
+import sRedImg from "./assets/items/SRED.png";
+import sGreenImg from "./assets/items/SGREEN.png";
 import hackeryBkg from './assets/background-01.png'
 
 const config = {
@@ -34,7 +40,6 @@ let scoreboard = {
   S1: null,
   S2: null
 };
-let star;
 let timer;
 let letter;
 let coffeeTimer;
@@ -43,6 +48,13 @@ let cursors;
 let currentColor;
 
 function preload() {
+  this.load.image('NBLUE', nBlueImg);
+  this.load.image('SBLUE', sBlueImg);
+  this.load.image('NGREEN', nGreenImg);
+  this.load.image('SGREEN', nGreenImg);
+  this.load.image('NRED', nRedImg);
+  this.load.image('SRED', sRedImg);
+  this.load.image('coffee', coffeeImg);
   this.load.image('hackeryBkg', hackeryBkg);
   this.load.image('star', starImg)
   this.load.image('coffee', coffeeImg)
@@ -90,7 +102,7 @@ function create() {
   scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
   timer = this.time.addEvent({
-    delay: 100,                // ms
+    delay: 1000,                // ms
     callback: letterItemGenerator,
     callbackScope: this,
     loop: true
@@ -134,7 +146,8 @@ function update() {
 function letterItemGenerator() {
   const letterChoice = Phaser.Math.RND.pick(["N", "S", "S"])
   const colorChoice = Phaser.Math.RND.pick(["RED", "GREEN", "BLUE"])
-  letter = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'star');
+  const choice = `${letterChoice}${colorChoice}`
+  letter = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, choice);
   letter.name = letterChoice
   letter.data = colorChoice
   this.physics.add.overlap(letter, player, letterEffect)
@@ -158,14 +171,14 @@ function coffeeItemGenerator() {
 }
 
 function updateScoreboard(letter) {
+  //If player catches new color, reset score and set current color goal
   let color = letter.data
-  console.log(color)
   if (color !== currentColor) {
     currentColor = color
     scoreboard = resetScoreboard()
   }
-  console.log(currentColor)
-  console.log(letter.name)
+
+  // handle letters
   if (letter.name == "N") {
     scoreboard.N = color
   } else if (letter.name == "S") {
@@ -176,8 +189,10 @@ function updateScoreboard(letter) {
     }
   }
 
-  // updateDatabase(scoreboard)
+  //Push scoreboard to firebase
+  updateDatabase(scoreboard)
 
+  //Check win condition
   if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
     // win the game
   }
