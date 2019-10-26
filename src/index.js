@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { updateDatabase } from './services/firebaseService';
 import sky from "./assets/sky.png";
-import ground from "./assets/platform.png";
+import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 
 const config = {
@@ -26,6 +26,7 @@ const config = {
 const game = new Phaser.Game(config);
 let platforms;
 let player;
+let background;
 
 function preload() {
   this.load.image('sky', sky);
@@ -38,8 +39,8 @@ function preload() {
 
 function create() {
   // adding background
-  const background = this.add.image(400, 300, 'sky');
-  background.create.setScale(4)
+  background = this.add.image(400, 300, 'sky');
+  background.setScale(4)
 
   // adding ground to game
   platforms = this.physics.add.staticGroup();
