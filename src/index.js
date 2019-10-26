@@ -4,7 +4,8 @@ import sky from "./assets/sky.png";
 import ground from "./assets/floor.png"
 import girl from "./assets/sprite-girl.png";
 import starImg from "./assets/items/star.png";
-import letterFactory from './itemFactory.js';
+import coffeeImg from "./assets/items/coffee.png";
+import items from './itemFactory.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -33,12 +34,15 @@ let background;
 let scoreboard;
 let star;
 let timer;
+let coffeeTimer;
+let coffee;
 let cursors;
 
 function preload() {
   this.load.image('sky', sky);
   this.load.image('ground', ground);
   this.load.image('star', starImg)
+  this.load.image('coffee', coffeeImg)
   this.load.spritesheet('girl',
     girl,
     { frameWidth: 32, frameHeight: 48 }
@@ -98,12 +102,20 @@ function create() {
   });
 
 
+  coffeeTimer = this.time.addEvent({
+    delay: 500,                // ms
+    callback: coffeeItemGenerator,
+    callbackScope: this,
+    repeat: 10
+  });
+
+
 
   cursors = this.input.keyboard.createCursorKeys();
 }
 
 function update() {
-  let letterItem = letterFactory("N", "BLUE")
+  // let letterItem = letterFactory("N", "BLUE")
   if (cursors.left.isDown) {
     player.setVelocityX(-250);
 
@@ -121,8 +133,23 @@ function update() {
   }
 }
 
+
+// BEGIN FALLING ITEMS
+
 function starTest() {
 
   console.log("INSIDE STARTEST FUNC");
   star = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'star');
 }
+
+// COFFEE ITEM
+function coffeeItemGenerator() {
+  coffee = this.physics.add.image(Math.floor((Math.random() * 800) + 1), 0, 'coffee');
+  this.physics.add.overlap(coffee, player, coffeeEffect)
+
+  function coffeeEffect(coffee) {
+    console.log("YOU ARE AMPED!!!")
+    coffee.disableBody(true, true)
+  }
+}
+
