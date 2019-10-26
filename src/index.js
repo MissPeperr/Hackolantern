@@ -53,7 +53,7 @@ function preload() {
 function create() {
   // adding background
   background = this.add.image(400, 300, 'sky');
-  background.setScale(4)
+  background.setScale(4);
 
   // adding ground to game
   platforms = this.physics.add.staticGroup();
@@ -104,7 +104,7 @@ function create() {
 
 
   coffeeTimer = this.time.addEvent({
-    delay: 500,                // ms
+    delay: 5000,                // ms
     callback: coffeeItemGenerator,
     callbackScope: this,
     loop: true
@@ -157,12 +157,5 @@ function coffeeItemGenerator() {
 function coffeeEffect(coffee) {
   console.log("YOU ARE AMPED!!!")
   coffee.disableBody(true, true)
-  let counter = 0;
-  for(let i = 0; counter < 100; i ++){
-    counter++;
-    hasCoffee = true;
-  }
-  // if(counter > 0){
-    hasCoffee = false;
-  // }
+  hasCoffee = true;
 }
