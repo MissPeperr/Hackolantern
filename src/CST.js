@@ -2,6 +2,7 @@ export const CST = {
   SCENES: {
     START: "START",
     GAME: "GAME",
-    END: "END"
+    END: "END",
+    WIN: "WIN"
   }
 }

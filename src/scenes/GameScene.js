@@ -11,6 +11,8 @@ import nGreenImg from "../assets/items/NGREEN.png";
 import sBlueImg from "../assets/items/SBLUE.png";
 import sRedImg from "../assets/items/SRED.png";
 import sGreenImg from "../assets/items/SGREEN.png";
+import nGrayImg from "../assets/items/NGRAY.png";
+import sGrayImg from "../assets/items/SGRAY.png";
 import hackeryBkg from '../assets/background-01.png'
 
 import lightningImg from '../assets/items/Lightning_Bolt.png'
@@ -25,6 +27,7 @@ import bgmusicFile from "../assets/sfx/theme.mp3";
 
 
 let player;
+let itemLoop = true;
 let background;
 let timer;
 let letter;
@@ -34,7 +37,11 @@ let coffee;
 let bug;
 let cursors;
 let currentColor;
-let healthCounter = 3;
+let hasBug = false;
+let bugCount = 0;
+// let healthCounter = 3;
+let healthBar;
+let youWin = false;
 let scoreboard = {
   N: null,
   S1: null,
@@ -42,6 +49,9 @@ let scoreboard = {
 };
 let lightning;
 let lightningTimer;
+let bug1;
+let bug2;
+let bug3;
 //sfx
 let bgmusic;
 let bugSfx;
@@ -50,6 +60,9 @@ let letterSfx;
 let winSfx;
 let loseSfx;
 let currentSpeed = 300;
+let n1Meter = nGrayImg
+let s1Meter = sGrayImg
+let s2Meter = sGrayImg
 
 
 export class GameScene extends Phaser.Scene {
@@ -126,34 +139,47 @@ export class GameScene extends Phaser.Scene {
       repeat: -1
     });
 
-    // scoreboard
-    scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
+    // BUG STATUS BAR
+
+    bug1 = this.add.image(1000, 35, 'bug').setDepth(2);
+    bug1.setVisible(false);
+    bug2 = this.add.image(1075, 35, 'bug').setDepth(2);
+    bug2.setVisible(false);
+    bug3 = this.add.image(1150, 35, 'bug').setDepth(2);
+    bug3.setVisible(false);
+
+
+    // NSS SYMBOL BAR
+    n1Meter = this.add.image(50, 35, 'n1Meter')
+    s1Meter = this.add.image(120, 35, 's1Meter')
+    s2Meter = this.add.image(190, 35, 's2Meter')
+
 
     timer = this.time.addEvent({
       delay: 1200,                // ms
       callback: letterItemGenerator,
       callbackScope: this,
-      loop: true
+      loop: itemLoop
     });
 
     coffeeTimer = this.time.addEvent({
       delay: 4000,                // ms
       callback: coffeeItemGenerator,
       callbackScope: this,
-      loop: true
+      loop: itemLoop
     });
 
     bugTimer = this.time.addEvent({
       delay: 500,                // ms
       callback: bugItemGenerator,
       callbackScope: this,
-      loop: true
+      loop: itemLoop
     });
     lightningTimer = this.time.addEvent({
       delay: 2000,                // ms
       callback: lightningGenerator,
       callbackScope: this,
-      loop: true
+      loop: itemLoop
     });
 
     bgmusic = this.sound.add('bgmusic');
@@ -172,7 +198,15 @@ export class GameScene extends Phaser.Scene {
 
   update() {
     cursors = this.input.keyboard.createCursorKeys();
-    if (healthCounter > 0) {
+
+    if (youWin) {
+      setTimeout(() => {
+        this.scene.switch(CST.SCENES.WIN)
+      }, 2000);
+    }
+
+
+    if (bugCount < 3) {
 
       if (cursors.left.isDown) {
         player.setVelocityX(-currentSpeed);
@@ -187,8 +221,11 @@ export class GameScene extends Phaser.Scene {
         player.anims.play('turn');
       }
     } else {
-      healthCounter = 3;
-      this.scene.switch(CST.SCENES.END);
+      // bugCount = 3;
+
+      setTimeout(() => {
+        this.scene.switch(CST.SCENES.END)
+      }, 2000);
     }
   }
 }
@@ -225,12 +262,21 @@ function bugItemGenerator() {
 
   function bugEffect(bug) {
     bugSfx.play({ volume: .4 })
+    console.log(`BUG >> ${bugCount}`)
     console.log("BUGGER - YOU'RE SO SLOW!!!")
+    // hasBug = true;
+    bugCount++;
     currentSpeed = 125;
     setTimeout(() => currentSpeed = 250, 3000);
-    healthCounter--
+    // healthCounter--
     bug.disableBody(true, true)
-    console.log(healthCounter)
+    if (bugCount === 1) {
+      bug1.setVisible(true);
+    } else if (bugCount === 2) {
+      bug2.setVisible(true);
+    } else if (bugCount === 3) {
+      bug3.setVisible(true)
+    }
   }
 }
 
@@ -251,13 +297,21 @@ function lightningGenerator() {
 }
 
 function lightningEffect(lightning) {
-  console.log(healthCounter)
   console.log('Power Up!')
-  if (healthCounter < 3) {
-    healthCounter++
+  console.log(`lightning >> ${bugCount}`)
+  if (bugCount > 0) {
+    bugCount--
   }
-  console.log(healthCounter)
+  console.log(bugCount)
   lightning.disableBody(true, true)
+  if (bugCount === 2) {
+    bug3.setVisible(false);
+  } else if (bugCount === 1) {
+    bug2.setVisible(false);
+  } else if (bugCount === 0) {
+    itemLoop = false;
+    bug1.setVisible(false)
+  }
 }
 
 function updateScoreboard(letter) {
@@ -283,11 +337,17 @@ function updateScoreboard(letter) {
   updateDatabase(scoreboard)
 
   //Check win condition
-  if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
-    // win the game
-    console.log("YOU WIN!")
+  if (scoreboard.N === scoreboard.S1 && scoreboard.S1 === scoreboard.S2) {
+    bugCount = 0;
+    youWin = true;
+    console.log("Three Matches");
     takePhoto();
   }
+
+  // if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.S2 !== null) {
+  //   // win the game
+  //   console.log("YOU WIN!")
+  // }
   function resetScoreboard() {
     return {
       N: null,
