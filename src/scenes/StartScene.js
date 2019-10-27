@@ -23,5 +23,8 @@ export class StartScene extends Phaser.Scene {
       .on('pointerdown', () => this.scene.start(CST.SCENES.GAME, "Game Scene Loaded"));
     console.log("Start Scene Loaded")
 
+    this.input.keyboard.on('keydown-' + 'SPACE', () => this.scene.start(CST.SCENES.GAME, "Game Scene Loaded"));
+    console.log("End Scene Loaded Hit Enter to restart!")
+
   }
 }

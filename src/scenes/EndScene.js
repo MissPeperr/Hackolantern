@@ -17,6 +17,8 @@ export class EndScene extends Phaser.Scene {
     background = this.add.image(600, 400, 'endBkg')
       .setInteractive()
       .on('pointerdown', () => window.location.reload());
+
+    this.input.keyboard.on('keydown-' + 'SPACE', function (event) { window.location.reload() });
     console.log("End Scene Loaded Hit Enter to restart!")
   }
 }
