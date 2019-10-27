@@ -18,6 +18,5 @@ export class EndScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => window.location.reload());
     console.log("End Scene Loaded Hit Enter to restart!")
-
   }
 }

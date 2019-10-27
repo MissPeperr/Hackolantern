@@ -32,9 +32,7 @@ let coffeeTimer;
 let bugTimer;
 let coffee;
 let bug;
-let hasBug = false;
 let cursors;
-let hasCoffee = false;
 let currentColor;
 let healthCounter = 3;
 let scoreboard = {
@@ -51,6 +49,7 @@ let coffeeSfx;
 let letterSfx;
 let winSfx;
 let loseSfx;
+let currentSpeed = 300;
 
 
 export class GameScene extends Phaser.Scene {
@@ -131,28 +130,28 @@ export class GameScene extends Phaser.Scene {
     scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
 
     timer = this.time.addEvent({
-      delay: 1000,                // ms
+      delay: 1200,                // ms
       callback: letterItemGenerator,
       callbackScope: this,
       loop: true
     });
 
     coffeeTimer = this.time.addEvent({
-      delay: 5000,                // ms
+      delay: 4000,                // ms
       callback: coffeeItemGenerator,
       callbackScope: this,
       loop: true
     });
 
     bugTimer = this.time.addEvent({
-      delay: 1500,                // ms
+      delay: 500,                // ms
       callback: bugItemGenerator,
       callbackScope: this,
       loop: true
     });
     lightningTimer = this.time.addEvent({
-      delay: 1500,                // ms
-      callback: lightingGenerator,
+      delay: 2000,                // ms
+      callback: lightningGenerator,
       callbackScope: this,
       loop: true
     });
@@ -175,29 +174,12 @@ export class GameScene extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
     if (healthCounter > 0) {
 
-      // let letterItem = letterFactory("N", "BLUE")
       if (cursors.left.isDown) {
-        player.setVelocityX(-250);
-        if (hasBug) {
-          player.setVelocityX(-50);
-          setTimeout(() => hasBug = false, 4000)
-        }
-        if (hasCoffee) {
-          player.setVelocityX(-1000);
-          setTimeout(() => hasCoffee = false, 5000);
-        }
+        player.setVelocityX(-currentSpeed);
         player.anims.play('left', true);
       }
       else if (cursors.right.isDown) {
-        player.setVelocityX(250);
-        if (hasBug) {
-          player.setVelocityX(50);
-          setTimeout(() => hasBug = false, 4000)
-        }
-        if (hasCoffee) {
-          player.setVelocityX(1000);
-          setTimeout(() => hasCoffee = false, 5000);
-        }
+        player.setVelocityX(currentSpeed);
         player.anims.play('right', true);
       }
       else {
@@ -208,7 +190,6 @@ export class GameScene extends Phaser.Scene {
 
       healthCounter = 3;
       this.scene.switch(CST.SCENES.END)
-      // this.scene.start(CST.SCENES.END, "End Scene Loaded")
     }
   }
 }
@@ -229,7 +210,6 @@ function letterItemGenerator() {
     letterSfx.play({ volume: .4 })
     letter.disableBody(true, true)
     updateScoreboard(letter)
-    // console.log(letter.name, letter.data)
   }
 }
 
@@ -247,7 +227,8 @@ function bugItemGenerator() {
   function bugEffect(bug) {
     bugSfx.play({ volume: .4 })
     console.log("BUGGER - YOU'RE SO SLOW!!!")
-    hasBug = true;
+    currentSpeed = 125;
+    setTimeout(() => currentSpeed = 250, 3000);
     healthCounter--
     bug.disableBody(true, true)
     console.log(healthCounter)
@@ -259,17 +240,25 @@ function coffeeEffect(coffee) {
   coffeeSfx.play({ volume: .4 })
   console.log("YOU ARE AMPED!!!")
   coffee.disableBody(true, true)
-  hasCoffee = true;
+  // hasCoffee = true;
+  currentSpeed = 1000;
+  setTimeout(() => currentSpeed = 250, 4000);
 }
 
-//Lighting Bolt
-function lightingGenerator() {
+//Lighnting Bolt
+function lightningGenerator() {
   lightning = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'lightning');
   this.physics.add.overlap(lightning, player, lightningEffect)
 }
 
 function lightningEffect(lightning) {
-  console.log('You got struck by lighting')
+  console.log(healthCounter)
+  console.log('Power Up!')
+  if (healthCounter < 3) {
+    healthCounter++
+  }
+  console.log(healthCounter)
+  lightning.disableBody(true, true)
 }
 
 function updateScoreboard(letter) {
