@@ -36,7 +36,8 @@ let hasBug = false;
 let cursors;
 let hasCoffee = false;
 let currentColor;
-let healthCounter = 3;
+let bugCount = 3;
+let healthBar;
 let scoreboard = {
   N: null,
   S1: null,
@@ -44,6 +45,9 @@ let scoreboard = {
 };
 let lightning;
 let lightningTimer;
+let bug1;
+let bug2;
+let bug3;
 //sfx
 let bgmusic;
 let bugSfx;
@@ -127,8 +131,14 @@ export class GameScene extends Phaser.Scene {
       repeat: -1
     });
 
-    // scoreboard
-    scoreboard = this.add.text(16, 16, 'score: ', { fontSize: '50px', fill: '#FFF' })
+    // health bar
+
+    bug1 = this.add.image(1000, 35, 'bug').setDepth(2);
+    bug1.setVisible(false);
+    bug2 = this.add.image(1075, 35, 'bug').setDepth(2);
+    bug2.setVisible(false);
+    bug3 = this.add.image(1150, 35, 'bug').setDepth(2);
+    bug3.setVisible(false);
 
     timer = this.time.addEvent({
       delay: 1000,                // ms
@@ -173,9 +183,8 @@ export class GameScene extends Phaser.Scene {
 
   update() {
     cursors = this.input.keyboard.createCursorKeys();
-    if (healthCounter > 0) {
+    if (bugCount > 0) {
 
-      // let letterItem = letterFactory("N", "BLUE")
       if (cursors.left.isDown) {
         player.setVelocityX(-250);
         if (hasBug) {
@@ -206,9 +215,8 @@ export class GameScene extends Phaser.Scene {
       }
     } else {
 
-      healthCounter = 3;
+      bugCount = 3;
       this.scene.switch(CST.SCENES.END)
-      // this.scene.start(CST.SCENES.END, "End Scene Loaded")
     }
   }
 }
@@ -229,7 +237,7 @@ function letterItemGenerator() {
     letterSfx.play({ volume: .4 })
     letter.disableBody(true, true)
     updateScoreboard(letter)
-    // console.log(letter.name, letter.data)
+
   }
 }
 
@@ -248,9 +256,15 @@ function bugItemGenerator() {
     bugSfx.play({ volume: .4 })
     console.log("BUGGER - YOU'RE SO SLOW!!!")
     hasBug = true;
-    healthCounter--
+    bugCount--;
     bug.disableBody(true, true)
-    console.log(healthCounter)
+    if (bugCount === 2) {
+      bug1.setVisible(true);
+    } else if (bugCount === 1) {
+      bug2.setVisible(true);
+    } else if (bugCount === 0) {
+      bug3.setVisible(true)
+    }
   }
 }
 
