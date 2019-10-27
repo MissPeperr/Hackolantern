@@ -60,9 +60,12 @@ let letterSfx;
 let winSfx;
 let loseSfx;
 let currentSpeed = 300;
-let n1Meter = nGrayImg
-let s1Meter = sGrayImg
-let s2Meter = sGrayImg
+let n1Meter;
+let n1BLUE;
+let s1BLUE;
+let s2BLUE;
+let s1Meter;
+let s2Meter;
 
 
 export class GameScene extends Phaser.Scene {
@@ -87,6 +90,8 @@ export class GameScene extends Phaser.Scene {
     // this.load.image('sky', sky);
     this.load.image('coffee', coffeeImg);
     this.load.image('bug', bugImg);
+    this.load.image('nGrayImg', nGrayImg);
+    this.load.image('sGrayImg', sGrayImg);
     this.load.image('lightning', lightningImg)
     this.load.image('NBLUE', nBlueImg);
     this.load.image('SBLUE', sBlueImg);
@@ -148,11 +153,20 @@ export class GameScene extends Phaser.Scene {
     bug3 = this.add.image(1150, 35, 'bug').setDepth(2);
     bug3.setVisible(false);
 
-
     // NSS SYMBOL BAR
-    n1Meter = this.add.image(50, 35, 'n1Meter')
-    s1Meter = this.add.image(120, 35, 's1Meter')
-    s2Meter = this.add.image(190, 35, 's2Meter')
+    n1Meter = this.add.image(50, 35, 'nGrayImg')
+      .setDepth(2);
+    n1Meter.setVisible(true);
+    n1BLUE = this.add.image(50, 35, 'NBLUE').setDepth(2);
+    n1BLUE.setVisible(false);
+
+    s1Meter = this.add.image(120, 35, 'sGrayImg');
+    s1BLUE = this.add.image(120, 35, 'SBLUE').setDepth(2);
+    s1BLUE.setVisible(false);
+
+    s2Meter = this.add.image(190, 35, 'sGrayImg');
+    s2BLUE = this.add.image(190, 35, 'SBLUE').setDepth(2);
+    s2BLUE.setVisible(false);
 
 
     timer = this.time.addEvent({
@@ -197,6 +211,8 @@ export class GameScene extends Phaser.Scene {
 
 
   update() {
+
+
     cursors = this.input.keyboard.createCursorKeys();
 
     if (youWin) {
@@ -204,7 +220,6 @@ export class GameScene extends Phaser.Scene {
         this.scene.switch(CST.SCENES.WIN)
       }, 2000);
     }
-
 
     if (bugCount < 3) {
 
@@ -320,6 +335,7 @@ function updateScoreboard(letter) {
   if (color !== currentColor) {
     currentColor = color
     scoreboard = resetScoreboard()
+
   }
 
   // handle letters
@@ -335,6 +351,7 @@ function updateScoreboard(letter) {
 
   //Push scoreboard to firebase
   updateDatabase(scoreboard)
+  updateScoreHud(scoreboard)
 
   //Check win condition
   if (scoreboard.N === scoreboard.S1 && scoreboard.S1 === scoreboard.S2) {
@@ -355,4 +372,23 @@ function updateScoreboard(letter) {
       S2: null
     }
   };
+}
+
+function updateScoreHud(scoreboard) {
+  if (scoreboard.N === null) {
+    n1Meter.setVisible(true)
+    n1BLUE.setVisible(false)
+  }
+  if (scoreboard.N === "BLUE") {
+    n1Meter.setVisible(false)
+    n1BLUE.setVisible(true)
+  }
+  if (scoreboard.S1 === "BLUE") {
+    s1Meter.setVisible(false)
+    s1BLUE.setVisible(true)
+  }
+  if (scoreboard.S2 === "BLUE") {
+    s1Meter.setVisible(false)
+    s1BLUE.setVisible(true)
+  }
 }
