@@ -6,12 +6,9 @@ import 'firebase/database';
 const $video = document.querySelector('#video');
 const $canvas = document.querySelector('#canvas');
 const storageRef = firebase.storage().ref('images');
-<<<<<<< HEAD
 const $spookyOverlay = document.querySelector('overlaySpookyBorder');
 
-=======
 const dataRef = firebase.database().ref('images');
->>>>>>> origin
 
 navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => {
@@ -37,9 +34,6 @@ export const takePhoto = () => {
   context.fillStyle = "#ff8400";
   context.textAlign = "bottom-right";
   context.fillText("NSS October 25-27 2019", 185, 465);
-
-  // context.font = "30px Verdana";
-
 
   const dataUrl = $canvas.toDataURL('image/png');
 
