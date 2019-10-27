@@ -12,6 +12,8 @@ import sRedImg from "./assets/items/SRED.png";
 import sGreenImg from "./assets/items/SGREEN.png";
 import hackeryBkg from './assets/background-01.png'
 import lightningImg from './assets/items/Lightning_Bolt.png'
+import coffeeSpillImg from '.assets/items/Spill.png'
+import birdImg from '.assets/items/Bird.png'
 
 import bugSfxFile from "./assets/sfx/bug.wav";
 import coffeeSfxFile from "./assets/sfx/coffee.wav";
@@ -57,6 +59,8 @@ let coffee;
 let bug;
 let lightning;
 let lightningTimer;
+let spill;
+let bird;
 let hasBug = false;
 let cursors;
 let hasCoffee = false;
@@ -89,6 +93,8 @@ function preload() {
   this.load.image('SGREEN', nGreenImg);
   this.load.image('NRED', nRedImg);
   this.load.image('SRED', sRedImg);
+  this.load.image('spill', coffeeSpillImg);
+  this.load.image('bird', birdImg)
   this.load.image('hackeryBkg', hackeryBkg);
   this.load.spritesheet('girl',
     girl,
