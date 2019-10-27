@@ -63,8 +63,14 @@ let loseSfx;
 let currentSpeed = 300;
 let n1Meter;
 let n1BLUE;
+let n1RED;
+let n1GREEN;
 let s1BLUE;
+let s1RED;
+let s1GREEN;
 let s2BLUE;
+let s2RED;
+let s2GREEN;
 let s1Meter;
 let s2Meter;
 
@@ -155,19 +161,39 @@ export class GameScene extends Phaser.Scene {
     bug3.setVisible(false);
 
     // NSS SYMBOL BAR
+    // N Colors
     n1Meter = this.add.image(50, 35, 'nGrayImg')
       .setDepth(2);
     n1Meter.setVisible(true);
     n1BLUE = this.add.image(50, 35, 'NBLUE').setDepth(2);
     n1BLUE.setVisible(false);
+    n1RED = this.add.image(50, 35, 'NRED').setDepth(2);
+    n1RED.setVisible(false);
+    n1GREEN = this.add.image(50, 35, 'NGREEN').setDepth(2);
+    n1GREEN.setVisible(false);
+    // S1 Colors
 
-    s1Meter = this.add.image(120, 35, 'sGrayImg');
+    s1Meter = this.add.image(120, 35, 'sGrayImg')
+      .setDepth(2);
+    s1Meter.setVisible(true);
     s1BLUE = this.add.image(120, 35, 'SBLUE').setDepth(2);
     s1BLUE.setVisible(false);
+    s1RED = this.add.image(120, 35, 'SRED').setDepth(2);
+    s1RED.setVisible(false);
+    s1GREEN = this.add.image(120, 35, 'SGREEN').setDepth(2);
+    s1GREEN.setVisible(false);
 
-    s2Meter = this.add.image(190, 35, 'sGrayImg');
+    //  S2 Colors
+
+    s2Meter = this.add.image(190, 35, 'sGrayImg')
+      .setDepth(2);
+    s1Meter.setVisible(true);
     s2BLUE = this.add.image(190, 35, 'SBLUE').setDepth(2);
     s2BLUE.setVisible(false);
+    s2RED = this.add.image(190, 35, 'SRED').setDepth(2);
+    s2RED.setVisible(false);
+    s2GREEN = this.add.image(190, 35, 'SGREEN').setDepth(2);
+    s2GREEN.setVisible(false);
 
 
     timer = this.time.addEvent({
@@ -239,7 +265,7 @@ export class GameScene extends Phaser.Scene {
       }
     } else {
       // bugCount = 3;
-
+      this.scene.pause();
       setTimeout(() => {
         this.scene.switch(CST.SCENES.END)
       }, 2000);
@@ -365,10 +391,6 @@ function updateScoreboard(letter) {
     takePhoto();
   }
 
-  // if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.S2 !== null) {
-  //   // win the game
-  //   console.log("YOU WIN!")
-  // }
   function resetScoreboard() {
     return {
       N: null,
@@ -379,21 +401,38 @@ function updateScoreboard(letter) {
 }
 
 function updateScoreHud(scoreboard) {
-  // finish conditions
-  if (scoreboard.N === null) {
-    n1Meter.setVisible(true)
-    n1BLUE.setVisible(false)
-  }
-  if (scoreboard.N === "BLUE") {
-    n1Meter.setVisible(false)
-    n1BLUE.setVisible(true)
-  }
-  if (scoreboard.S1 === "BLUE") {
-    s1Meter.setVisible(false)
-    s1BLUE.setVisible(true)
-  }
-  if (scoreboard.S2 === "BLUE") {
-    s1Meter.setVisible(false)
-    s1BLUE.setVisible(true)
-  }
+  console.log(scoreboard);
+  let nArray = [{ "null": n1Meter }, { "BLUE": n1BLUE }, { "RED": n1RED }, { "GREEN": n1GREEN }]
+  let s1Array = [{ "null": s1Meter }, { "BLUE": s1BLUE }, { "RED": s1RED }, { "GREEN": s1GREEN }]
+  let s2Array = [{ "null": s2Meter }, { "BLUE": s2BLUE }, { "RED": s2RED }, { "GREEN": s2GREEN }]
+
+  nArray.forEach(pair => {
+    for (var k in pair) {
+      if (k !== scoreboard.N) {
+        pair[k].setVisible(false)
+      } else if (k === scoreboard.N) {
+        pair[k].setVisible(true)
+      }
+    }
+  });
+
+  s1Array.forEach(pair => {
+    for (var k in pair) {
+      if (k !== scoreboard.S1) {
+        pair[k].setVisible(false)
+      } else if (k === scoreboard.S1) {
+        pair[k].setVisible(true)
+      }
+    }
+  });
+  s2Array.forEach(pair => {
+    for (var k in pair) {
+      if (k !== scoreboard.S2) {
+        pair[k].setVisible(false)
+      } else if (k === scoreboard.S2) {
+        pair[k].setVisible(true)
+      }
+    }
+  });
 }
+
