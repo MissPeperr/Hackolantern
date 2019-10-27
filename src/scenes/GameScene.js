@@ -13,6 +13,15 @@ import sRedImg from "../assets/items/SRED.png";
 import sGreenImg from "../assets/items/SGREEN.png";
 import hackeryBkg from '../assets/background-01.png'
 
+import lightningImg from '../assets/items/Lightning_Bolt.png'
+
+import bugSfxFile from "../assets/sfx/bug.wav";
+import coffeeSfxFile from "../assets/sfx/coffee.wav";
+import letterSfxFile from "../assets/sfx/letter.wav";
+import loseSfxFile from "../assets/sfx/lose.wav";
+import winSfxFile from "../assets/sfx/win.wav";
+import bgmusicFile from "../assets/sfx/theme.mp3";
+
 
 
 let player;
@@ -27,12 +36,21 @@ let hasBug = false;
 let cursors;
 let hasCoffee = false;
 let currentColor;
-let healthCounter = 1;
+let healthCounter = 3;
 let scoreboard = {
   N: null,
   S1: null,
   S2: null
 };
+let lightning;
+let lightningTimer;
+//sfx
+let bgmusic;
+let bugSfx;
+let coffeeSfx;
+let letterSfx;
+let winSfx;
+let loseSfx;
 
 
 export class GameScene extends Phaser.Scene {
@@ -47,9 +65,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    // sfx
+    this.load.audio('bgmusic', bgmusicFile);
+    this.load.audio('bugSfx', bugSfxFile);
+    this.load.audio('coffeeSfx', coffeeSfxFile);
+    this.load.audio('loseSfx', loseSfxFile);
+    this.load.audio('winSfx', winSfxFile);
+    this.load.audio('letterSfx', letterSfxFile);
     // this.load.image('sky', sky);
     this.load.image('coffee', coffeeImg);
     this.load.image('bug', bugImg);
+    this.load.image('lightning', lightningImg)
     this.load.image('NBLUE', nBlueImg);
     this.load.image('SBLUE', sBlueImg);
     this.load.image('NGREEN', nGreenImg);
@@ -124,6 +150,24 @@ export class GameScene extends Phaser.Scene {
       callbackScope: this,
       loop: true
     });
+    lightningTimer = this.time.addEvent({
+      delay: 1500,                // ms
+      callback: lightingGenerator,
+      callbackScope: this,
+      loop: true
+    });
+
+    bgmusic = this.sound.add('bgmusic');
+    bugSfx = this.sound.add('bugSfx')
+    coffeeSfx = this.sound.add('coffeeSfx')
+    winSfx = this.sound.add('winSfx')
+    loseSfx = this.sound.add('loseSfx')
+    letterSfx = this.sound.add('letterSfx')
+
+    bgmusic.play({
+      volume: .2,
+      loop: true
+    })
   }
 
 
@@ -182,6 +226,7 @@ function letterItemGenerator() {
   this.physics.add.overlap(letter, player, letterEffect)
 
   function letterEffect(letter) {
+    letterSfx.play({ volume: .4 })
     letter.disableBody(true, true)
     updateScoreboard(letter)
     // console.log(letter.name, letter.data)
@@ -200,6 +245,7 @@ function bugItemGenerator() {
   this.physics.add.overlap(bug, player, bugEffect)
 
   function bugEffect(bug) {
+    bugSfx.play({ volume: .4 })
     console.log("BUGGER - YOU'RE SO SLOW!!!")
     hasBug = true;
     healthCounter--
@@ -210,11 +256,21 @@ function bugItemGenerator() {
 
 // make coffee speed up character for now
 function coffeeEffect(coffee) {
+  coffeeSfx.play({ volume: .4 })
   console.log("YOU ARE AMPED!!!")
   coffee.disableBody(true, true)
   hasCoffee = true;
 }
 
+//Lighting Bolt
+function lightingGenerator() {
+  lightning = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'lightning');
+  this.physics.add.overlap(lightning, player, lightningEffect)
+}
+
+function lightningEffect(lightning) {
+  console.log('You got struck by lighting')
+}
 
 function updateScoreboard(letter) {
   //If player catches new color, reset score and set current color goal
