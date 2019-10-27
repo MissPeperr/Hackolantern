@@ -63,8 +63,14 @@ let loseSfx;
 let currentSpeed = 300;
 let n1Meter;
 let n1BLUE;
+let n1RED;
+let n1GREEN;
 let s1BLUE;
+let s1RED;
+let s1GREEN;
 let s2BLUE;
+let s2RED;
+let s2GREEN;
 let s1Meter;
 let s2Meter;
 
@@ -155,19 +161,39 @@ export class GameScene extends Phaser.Scene {
     bug3.setVisible(false);
 
     // NSS SYMBOL BAR
+    // N Colors
     n1Meter = this.add.image(50, 35, 'nGrayImg')
       .setDepth(2);
     n1Meter.setVisible(true);
     n1BLUE = this.add.image(50, 35, 'NBLUE').setDepth(2);
     n1BLUE.setVisible(false);
+    n1RED = this.add.image(50, 35, 'NRED').setDepth(2);
+    n1RED.setVisible(false);
+    n1GREEN = this.add.image(50, 35, 'NGREEN').setDepth(2);
+    n1GREEN.setVisible(false);
+// S1 Colors
 
-    s1Meter = this.add.image(120, 35, 'sGrayImg');
+    s1Meter = this.add.image(120, 35, 'sGrayImg')
+    .setDepth(2);
+    s1Meter.setVisible(true);
     s1BLUE = this.add.image(120, 35, 'SBLUE').setDepth(2);
     s1BLUE.setVisible(false);
+    s1RED = this.add.image(120, 35, 'SRED').setDepth(2);
+    s1RED.setVisible(false);
+    s1GREEN = this.add.image(120, 35, 'SGREEN').setDepth(2);
+    s1GREEN.setVisible(false);
 
-    s2Meter = this.add.image(190, 35, 'sGrayImg');
+//  S2 Colors
+
+    s2Meter = this.add.image(190, 35, 'sGrayImg')
+    .setDepth(2);
+    s1Meter.setVisible(true);
     s2BLUE = this.add.image(190, 35, 'SBLUE').setDepth(2);
     s2BLUE.setVisible(false);
+    s2RED = this.add.image(190, 35, 'SRED').setDepth(2);
+    s2RED.setVisible(false);
+    s2GREEN = this.add.image(190, 35, 'SGREEN').setDepth(2);
+    s2GREEN.setVisible(false);
 
 
     timer = this.time.addEvent({
@@ -379,21 +405,76 @@ function updateScoreboard(letter) {
 }
 
 function updateScoreHud(scoreboard) {
-  // finish conditions
+  // N Status
   if (scoreboard.N === null) {
     n1Meter.setVisible(true)
     n1BLUE.setVisible(false)
+    n1RED.setVisible(false)
+    n1GREEN.setVisible(false)
   }
-  if (scoreboard.N === "BLUE") {
+ else if (scoreboard.N === "BLUE") {
     n1Meter.setVisible(false)
+    n1RED.setVisible(false)
+    n1GREEN.setVisible(false)
     n1BLUE.setVisible(true)
   }
+  else if (scoreboard.N === "RED") {
+    n1Meter.setVisible(false)
+    n1RED.setVisible(true)
+    n1GREEN.setVisible(false)
+    n1BLUE.setVisible(false)
+  }
+ else if (scoreboard.N === "GREEN") {
+    n1Meter.setVisible(false)
+    n1RED.setVisible(false)
+    n1GREEN.setVisible(true)
+    n1BLUE.setVisible(false)
+  }
+
+  // S1 Status
+
   if (scoreboard.S1 === "BLUE") {
     s1Meter.setVisible(false)
     s1BLUE.setVisible(true)
+    s1RED.setVisible(false)
+    s1GREEN.setVisible(false)
   }
-  if (scoreboard.S2 === "BLUE") {
+ 
+  else if (scoreboard.S1 === "GREEN") {
     s1Meter.setVisible(false)
-    s1BLUE.setVisible(true)
+    s1BLUE.setVisible(false)
+    s1RED.setVisible(true)
+    s1GREEN.setVisible(false)
+  }
+  
+  else if (scoreboard.S1 === "RED") {
+    s1Meter.setVisible(false)
+    s1BLUE.setVisible(false)
+    s1RED.setVisible(true)
+    s1GREEN.setVisible(false)
+  }
+
+// S2 Status
+
+  if (scoreboard.S2 === "RED") {
+    s2Meter.setVisible(false)
+    s2BLUE.setVisible(false)
+    s2RED.setVisible(true)
+    s2GREEN.setVisible(false)
+  }
+
+  else if (scoreboard.S2 === "BLUE") {
+    s2Meter.setVisible(false)
+    s2BLUE.setVisible(true)
+    s2RED.setVisible(false)
+    s2GREEN.setVisible(false)
+  }
+
+  else if (scoreboard.S2 === "GREEN") {
+    s2Meter.setVisible(false)
+    s2BLUE.setVisible(false)
+    s2RED.setVisible(true)
+    s2GREEN.setVisible(false)
   }
 }
+
