@@ -34,7 +34,9 @@ let coffee;
 let bug;
 let cursors;
 let currentColor;
+let hasBug = false;
 let bugCount = 3;
+let healthCounter = 3;
 let healthBar;
 let scoreboard = {
   N: null,
@@ -241,6 +243,7 @@ function bugItemGenerator() {
     bugCount--;
     currentSpeed = 125;
     setTimeout(() => currentSpeed = 250, 3000);
+    healthCounter--
     bug.disableBody(true, true)
     if (bugCount === 2) {
       bug1.setVisible(true);
