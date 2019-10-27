@@ -45,7 +45,8 @@ let youWin = false;
 let scoreboard = {
   N: null,
   S1: null,
-  S2: null
+  S2: null,
+  WIN: false
 };
 let lightning;
 let lightningTimer;
@@ -216,6 +217,7 @@ export class GameScene extends Phaser.Scene {
     cursors = this.input.keyboard.createCursorKeys();
 
     if (youWin) {
+      this.scene.pause();
       setTimeout(() => {
         this.scene.switch(CST.SCENES.WIN)
       }, 2000);
@@ -357,6 +359,8 @@ function updateScoreboard(letter) {
   if (scoreboard.N === scoreboard.S1 && scoreboard.S1 === scoreboard.S2) {
     bugCount = 0;
     youWin = true;
+    scoreboard.WIN = true;
+    console.log(scoreboard)
     console.log("Three Matches");
     takePhoto();
   }
