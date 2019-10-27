@@ -27,13 +27,13 @@ export const takePhoto = () => {
   context.font = "47px Nosifer";
   context.fillStyle = "#ff8400";
   context.textAlign = "bottom-right";
-  context.fillText("🎃HackoWeen!🎃", 45, 430);
+  context.fillText("🎃HackoWeen!🎃", 45, 50);
 
 // This is the Same code over again that creates text but this one should be a sub text. 
   context.font = "15px Nosifer";
   context.fillStyle = "#ff8400";
   context.textAlign = "bottom-right";
-  context.fillText("NSS October 25-27 2019", 185, 465);
+  context.fillText("NSS October 25-27 2019", 185, 75);
 
   const dataUrl = $canvas.toDataURL('image/png');
 
@@ -49,3 +49,4 @@ export const takePhoto = () => {
     .then(() => $video.pause());
 };
 
+document.querySelector('#testButton').addEventListener('click', takePhoto);
