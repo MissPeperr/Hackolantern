@@ -32,9 +32,7 @@ let coffeeTimer;
 let bugTimer;
 let coffee;
 let bug;
-let hasBug = false;
 let cursors;
-let hasCoffee = false;
 let currentColor;
 let bugCount = 3;
 let healthBar;
@@ -55,6 +53,7 @@ let coffeeSfx;
 let letterSfx;
 let winSfx;
 let loseSfx;
+let currentSpeed = 300;
 
 
 export class GameScene extends Phaser.Scene {
@@ -141,28 +140,28 @@ export class GameScene extends Phaser.Scene {
     bug3.setVisible(false);
 
     timer = this.time.addEvent({
-      delay: 1000,                // ms
+      delay: 1200,                // ms
       callback: letterItemGenerator,
       callbackScope: this,
       loop: true
     });
 
     coffeeTimer = this.time.addEvent({
-      delay: 5000,                // ms
+      delay: 4000,                // ms
       callback: coffeeItemGenerator,
       callbackScope: this,
       loop: true
     });
 
     bugTimer = this.time.addEvent({
-      delay: 1500,                // ms
+      delay: 500,                // ms
       callback: bugItemGenerator,
       callbackScope: this,
       loop: true
     });
     lightningTimer = this.time.addEvent({
-      delay: 1500,                // ms
-      callback: lightingGenerator,
+      delay: 2000,                // ms
+      callback: lightningGenerator,
       callbackScope: this,
       loop: true
     });
@@ -186,27 +185,11 @@ export class GameScene extends Phaser.Scene {
     if (bugCount > 0) {
 
       if (cursors.left.isDown) {
-        player.setVelocityX(-250);
-        if (hasBug) {
-          player.setVelocityX(-50);
-          setTimeout(() => hasBug = false, 4000)
-        }
-        if (hasCoffee) {
-          player.setVelocityX(-1000);
-          setTimeout(() => hasCoffee = false, 5000);
-        }
+        player.setVelocityX(-currentSpeed);
         player.anims.play('left', true);
       }
       else if (cursors.right.isDown) {
-        player.setVelocityX(250);
-        if (hasBug) {
-          player.setVelocityX(50);
-          setTimeout(() => hasBug = false, 4000)
-        }
-        if (hasCoffee) {
-          player.setVelocityX(1000);
-          setTimeout(() => hasCoffee = false, 5000);
-        }
+        player.setVelocityX(currentSpeed);
         player.anims.play('right', true);
       }
       else {
@@ -237,7 +220,6 @@ function letterItemGenerator() {
     letterSfx.play({ volume: .4 })
     letter.disableBody(true, true)
     updateScoreboard(letter)
-
   }
 }
 
@@ -257,6 +239,8 @@ function bugItemGenerator() {
     console.log("BUGGER - YOU'RE SO SLOW!!!")
     hasBug = true;
     bugCount--;
+    currentSpeed = 125;
+    setTimeout(() => currentSpeed = 250, 3000);
     bug.disableBody(true, true)
     if (bugCount === 2) {
       bug1.setVisible(true);
@@ -273,17 +257,25 @@ function coffeeEffect(coffee) {
   coffeeSfx.play({ volume: .4 })
   console.log("YOU ARE AMPED!!!")
   coffee.disableBody(true, true)
-  hasCoffee = true;
+  // hasCoffee = true;
+  currentSpeed = 1000;
+  setTimeout(() => currentSpeed = 250, 4000);
 }
 
-//Lighting Bolt
-function lightingGenerator() {
+//Lighnting Bolt
+function lightningGenerator() {
   lightning = this.physics.add.image(Math.floor((Math.random() * 1200) + 1), 0, 'lightning');
   this.physics.add.overlap(lightning, player, lightningEffect)
 }
 
 function lightningEffect(lightning) {
-  console.log('You got struck by lighting')
+  console.log(healthCounter)
+  console.log('Power Up!')
+  if (healthCounter < 3) {
+    healthCounter++
+  }
+  console.log(healthCounter)
+  lightning.disableBody(true, true)
 }
 
 function updateScoreboard(letter) {
