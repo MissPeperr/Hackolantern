@@ -236,7 +236,7 @@ function updateScoreboard(letter) {
   //Check win condition
   if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.s2 !== null) {
     // win the game
-    takePhoto();
+    // takePhoto();
   }
 }
 
@@ -248,3 +248,5 @@ function resetScoreboard() {
     S2: null
   }
 };
+
+document.querySelector('#testButton').addEventListener("click", takePhoto);
