@@ -1,12 +1,17 @@
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
+import 'firebase/database';
 
 
 const $video = document.querySelector('#video');
 const $canvas = document.querySelector('#canvas');
 const storageRef = firebase.storage().ref('images');
+<<<<<<< HEAD
 const $spookyOverlay = document.querySelector('overlaySpookyBorder');
 
+=======
+const dataRef = firebase.database().ref('images');
+>>>>>>> origin
 
 navigator.mediaDevices.getUserMedia({ video: true })
   .then(stream => {
@@ -45,7 +50,8 @@ export const takePhoto = () => {
       const childRef = storageRef.child(`${Date.now()}`);
       return childRef.put(blob)
     })
-    .then(() => console.log('image added'))
+    .then(i => i.ref.getDownloadURL())
+    .then(url => dataRef.push(url))
     .then(() => $video.pause());
 };
 
