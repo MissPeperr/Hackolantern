@@ -187,9 +187,8 @@ export class GameScene extends Phaser.Scene {
         player.anims.play('turn');
       }
     } else {
-
       healthCounter = 3;
-      this.scene.switch(CST.SCENES.END)
+      this.scene.switch(CST.SCENES.END);
     }
   }
 }
