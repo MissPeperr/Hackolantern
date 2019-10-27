@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { StartScene } from "./scenes/StartScene";
 import { GameScene } from "./scenes/GameScene";
 import { EndScene } from "./scenes/EndScene";
+import { WinScene } from "./scenes/WinScene";
 
 let game = new Phaser.Game({
   type: Phaser.AUTO,
@@ -17,6 +18,6 @@ let game = new Phaser.Game({
       debug: false
     }
   },
-  scene: [StartScene, GameScene, EndScene],
+  scene: [StartScene, GameScene, EndScene, WinScene],
   pixelArt: true
 });
