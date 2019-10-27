@@ -6,7 +6,7 @@ import 'firebase/database';
 const $video = document.querySelector('#video');
 const $canvas = document.querySelector('#canvas');
 const storageRef = firebase.storage().ref('images');
-const $spookyOverlay = document.querySelector('overlaySpookyBorder');
+
 
 const dataRef = firebase.database().ref('images');
 
@@ -49,4 +49,3 @@ export const takePhoto = () => {
     .then(() => $video.pause());
 };
 
-document.querySelector('#testButton').addEventListener('click', takePhoto);
