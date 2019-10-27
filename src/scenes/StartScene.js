@@ -21,10 +21,6 @@ export class StartScene extends Phaser.Scene {
     pumpkinBtn = this.add.image(600, 400, 'pumpkin')
       .setInteractive()
       .on('pointerdown', () => this.scene.start(CST.SCENES.GAME, "Game Scene Loaded"));
-
-
-
-    // setTimeout(() => this.scene.start(CST.SCENES.GAME, "Game Scene Loaded"), 3000);
     console.log("Start Scene Loaded")
 
   }
