@@ -9,8 +9,8 @@ export class StartScene extends Phaser.Scene {
   init() { }
   preload() { }
   create() {
-    setTimeout(() => this.scene.start(CST.SCENES.GAME, "Game Scene Loaded"), 100);
-
+    setTimeout(() => this.scene.start(CST.SCENES.GAME, "Game Scene Loaded"), 3000);
     console.log("Start Scene Loaded")
+
   }
 }

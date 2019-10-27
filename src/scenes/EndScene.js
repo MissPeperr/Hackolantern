@@ -9,6 +9,6 @@ export class EndScene extends Phaser.Scene {
   init() { }
   preload() { }
   create() {
-    console.log("End Scene Loaded")
+    console.log("End Scene Loaded Hit Enter to restart!")
   }
 }

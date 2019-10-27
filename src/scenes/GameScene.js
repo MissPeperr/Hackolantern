@@ -27,7 +27,7 @@ let hasBug = false;
 let cursors;
 let hasCoffee = false;
 let currentColor;
-let healthCounter = 3;
+let healthCounter = 1;
 let scoreboard = {
   N: null,
   S1: null,
@@ -42,8 +42,7 @@ export class GameScene extends Phaser.Scene {
     })
   }
 
-  init(data) {
-    console.log(data);
+  init() {
     console.log("I got it");
   }
 
@@ -162,7 +161,10 @@ export class GameScene extends Phaser.Scene {
         player.anims.play('turn');
       }
     } else {
-      this.scene.start(CST.SCENES.END, "End Scene Loaded")
+
+      healthCounter = 3;
+      this.scene.switch(CST.SCENES.END)
+      // this.scene.start(CST.SCENES.END, "End Scene Loaded")
     }
   }
 }
