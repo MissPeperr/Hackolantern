@@ -388,7 +388,9 @@ function updateScoreboard(letter) {
     scoreboard.WIN = true;
     console.log(scoreboard)
     console.log("Three Matches");
-    takePhoto();
+    setTimeout(() => {
+      takePhoto();
+    }, 2000);
   }
 
   function resetScoreboard() {
