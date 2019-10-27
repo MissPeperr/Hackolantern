@@ -171,10 +171,10 @@ export class GameScene extends Phaser.Scene {
     n1RED.setVisible(false);
     n1GREEN = this.add.image(50, 35, 'NGREEN').setDepth(2);
     n1GREEN.setVisible(false);
-// S1 Colors
+    // S1 Colors
 
     s1Meter = this.add.image(120, 35, 'sGrayImg')
-    .setDepth(2);
+      .setDepth(2);
     s1Meter.setVisible(true);
     s1BLUE = this.add.image(120, 35, 'SBLUE').setDepth(2);
     s1BLUE.setVisible(false);
@@ -183,10 +183,10 @@ export class GameScene extends Phaser.Scene {
     s1GREEN = this.add.image(120, 35, 'SGREEN').setDepth(2);
     s1GREEN.setVisible(false);
 
-//  S2 Colors
+    //  S2 Colors
 
     s2Meter = this.add.image(190, 35, 'sGrayImg')
-    .setDepth(2);
+      .setDepth(2);
     s1Meter.setVisible(true);
     s2BLUE = this.add.image(190, 35, 'SBLUE').setDepth(2);
     s2BLUE.setVisible(false);
@@ -265,7 +265,7 @@ export class GameScene extends Phaser.Scene {
       }
     } else {
       // bugCount = 3;
-
+      this.scene.pause();
       setTimeout(() => {
         this.scene.switch(CST.SCENES.END)
       }, 2000);
@@ -391,10 +391,6 @@ function updateScoreboard(letter) {
     takePhoto();
   }
 
-  // if (scoreboard.N !== null && scoreboard.S1 !== null && scoreboard.S2 !== null) {
-  //   // win the game
-  //   console.log("YOU WIN!")
-  // }
   function resetScoreboard() {
     return {
       N: null,
@@ -405,76 +401,38 @@ function updateScoreboard(letter) {
 }
 
 function updateScoreHud(scoreboard) {
-  // N Status
-  if (scoreboard.N === null) {
-    n1Meter.setVisible(true)
-    n1BLUE.setVisible(false)
-    n1RED.setVisible(false)
-    n1GREEN.setVisible(false)
-  }
- else if (scoreboard.N === "BLUE") {
-    n1Meter.setVisible(false)
-    n1RED.setVisible(false)
-    n1GREEN.setVisible(false)
-    n1BLUE.setVisible(true)
-  }
-  else if (scoreboard.N === "RED") {
-    n1Meter.setVisible(false)
-    n1RED.setVisible(true)
-    n1GREEN.setVisible(false)
-    n1BLUE.setVisible(false)
-  }
- else if (scoreboard.N === "GREEN") {
-    n1Meter.setVisible(false)
-    n1RED.setVisible(false)
-    n1GREEN.setVisible(true)
-    n1BLUE.setVisible(false)
-  }
+  console.log(scoreboard);
+  let nArray = [{ "null": n1Meter }, { "BLUE": n1BLUE }, { "RED": n1RED }, { "GREEN": n1GREEN }]
+  let s1Array = [{ "null": s1Meter }, { "BLUE": s1BLUE }, { "RED": s1RED }, { "GREEN": s1GREEN }]
+  let s2Array = [{ "null": s2Meter }, { "BLUE": s2BLUE }, { "RED": s2RED }, { "GREEN": s2GREEN }]
 
-  // S1 Status
+  nArray.forEach(pair => {
+    for (var k in pair) {
+      if (k !== scoreboard.N) {
+        pair[k].setVisible(false)
+      } else if (k === scoreboard.N) {
+        pair[k].setVisible(true)
+      }
+    }
+  });
 
-  if (scoreboard.S1 === "BLUE") {
-    s1Meter.setVisible(false)
-    s1BLUE.setVisible(true)
-    s1RED.setVisible(false)
-    s1GREEN.setVisible(false)
-  }
- 
-  else if (scoreboard.S1 === "GREEN") {
-    s1Meter.setVisible(false)
-    s1BLUE.setVisible(false)
-    s1RED.setVisible(true)
-    s1GREEN.setVisible(false)
-  }
-  
-  else if (scoreboard.S1 === "RED") {
-    s1Meter.setVisible(false)
-    s1BLUE.setVisible(false)
-    s1RED.setVisible(true)
-    s1GREEN.setVisible(false)
-  }
-
-// S2 Status
-
-  if (scoreboard.S2 === "RED") {
-    s2Meter.setVisible(false)
-    s2BLUE.setVisible(false)
-    s2RED.setVisible(true)
-    s2GREEN.setVisible(false)
-  }
-
-  else if (scoreboard.S2 === "BLUE") {
-    s2Meter.setVisible(false)
-    s2BLUE.setVisible(true)
-    s2RED.setVisible(false)
-    s2GREEN.setVisible(false)
-  }
-
-  else if (scoreboard.S2 === "GREEN") {
-    s2Meter.setVisible(false)
-    s2BLUE.setVisible(false)
-    s2RED.setVisible(true)
-    s2GREEN.setVisible(false)
-  }
+  s1Array.forEach(pair => {
+    for (var k in pair) {
+      if (k !== scoreboard.S1) {
+        pair[k].setVisible(false)
+      } else if (k === scoreboard.S1) {
+        pair[k].setVisible(true)
+      }
+    }
+  });
+  s2Array.forEach(pair => {
+    for (var k in pair) {
+      if (k !== scoreboard.S2) {
+        pair[k].setVisible(false)
+      } else if (k === scoreboard.S2) {
+        pair[k].setVisible(true)
+      }
+    }
+  });
 }
 
