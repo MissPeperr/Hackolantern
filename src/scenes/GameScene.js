@@ -375,6 +375,7 @@ function updateScoreboard(letter) {
 }
 
 function updateScoreHud(scoreboard) {
+  // finish conditions
   if (scoreboard.N === null) {
     n1Meter.setVisible(true)
     n1BLUE.setVisible(false)
