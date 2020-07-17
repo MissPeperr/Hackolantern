@@ -33,3 +33,16 @@ As a member of this amazingly creative team, my primary responsibility was relat
 I also generated many of the graphical elements, including the animation sprite of the main character.
 
 ![Character Sprite](src/assets/sprite-girl.png)
+
+## The Hackolantern Dev Team
+
+- [Adam Sheaffer](https://github.com/AdamSheaffer)
+- [Bryan Nilsen](https://github.com/BryanNilsen)
+- [Madi Pepper](https://github.com/MissPeperr)
+- [Brenda Long](https://github.com/brendalong)
+- [Nolan Little](https://github.com/Nolan-Little)
+- [Melody Stern](https://github.com/melliemuse)
+- [Jeremiah Bell](https://github.com/Belljeremiah)
+- [Matthew Ross](https://github.com/spuuun)
+
+This project was designed and built in under 42 hours. Fueled by caffeine, pizza, laughter, and high-fives.
