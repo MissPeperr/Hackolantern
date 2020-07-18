@@ -6,9 +6,11 @@
 
 ## Project Overview:
 
-The team of alumni and students created a game with pumpkins as their game controllers! Tap the pumpkin in the center to start the game. Tap the pumpkin on the right or left to move your character on the screen. The goal is to collect the letters N-S-S in the same color while avoiding the bugs which slow you down. Collecting a lightning bolt zapped all your bugs and kept you alive. Catch three bugs and your game was over. Grab a cup of coffee and you get a caffeine kick and your speed doubles.
+The main objective of this project was to create a game using pumpkins as controllers. Additionally, we wanted to integrate a feature that would take the player's photo if they won the game, and then display all the winner photos on a second monitor.
 
-A second app was integrated that _sneakily_ takes your photo, if you win, and displays it on a second monitor!
+## Gameplay
+
+Tap the pumpkin in the center to start the game. Tap the pumpkin on the right or left to move your character on the screen. The goal is to collect the letters N-S-S in the same color while avoiding the bugs which slow you down. Collecting a lightning bolt zaps all your bugs and you regain your original speed. Catch three bugs and your game is over. Grab a cup of coffee and you get a caffeine boost and your speed doubles. Win the game and get your photo taken and displayed with the rest of the winners.
 
 ![Gameplay](src/assets/hackolantern.gif)
 
