@@ -22,25 +22,11 @@ Tap the pumpkin in the center to start the game. Tap the pumpkin on the right or
 - [Makey Makey](https://makeymakey.com/) - pumpkin controllers interface
 - [Firebase](https://firebase.google.com/) - photo storage
 
-## Personal Responsibilities:
-
-As a member of this amazingly creative team, my primary responsibility was related to gameplay development. I had to quickly learn Phaser, so I dove into the docs and wrote a lot of the code including, but not limited to:
-
-- falling item and character speed calculations
-- scene transitions
-- scoring, counters, and win/lose game scenarios
-- mapping keyboard to Makey-Makey controls
-- integrating sound effects
-
-I also generated many of the graphical elements, including the animation sprite of the main character.
-
-![Character Sprite](src/assets/sprite-girl.png)
-
 ## The Hackolantern Dev Team
 
 - [Adam Sheaffer](https://github.com/AdamSheaffer)
 - [Bryan Nilsen](https://github.com/BryanNilsen)
-- [Madi Pepper](https://github.com/MissPeperr)
+- [Madi Peper](https://github.com/MissPeperr)
 - [Brenda Long](https://github.com/brendalong)
 - [Nolan Little](https://github.com/Nolan-Little)
 - [Melody Stern](https://github.com/melliemuse)
